@@ -1,0 +1,122 @@
+rec p8047gluc1_frames.img Tue Jan 13 21:08:10 CST 2015 jjlee
+ecattoanalyze p8047gluc1.v
+$Id: $program,v 0.9 2015/01/12 01:08:00 jjlee Exp jjlee $
+------------------------------------------------
+p8047gluc1.v     06/20/2012, 10:40:4
+File format = Matrix 7
+Original file name = /sd0/p8047_6d9_4572_de15.S
+ECAT 962
+Stationary acquisition
+Scatter-corrected  (Norm+AttenMeas+ScatCor3d+ArcCor+DecayCor)
+Software (Ver 72)  Facility = Wash Univ NNICU
+Filter = Ramp          Reconstruction Cutoff = 0.000000
+ECAT calibration factor = 9372813.000000
+Decay correction factor = 1.019406
+Recon Zoom = 2.570
+xoffset = 0.0  yoffset = 0.0 cm
+Pixel size = 0.200331 cm
+Plane_separation = 0.242500 cm
+Isotope =  C-11   Compound = C11-Glucose
+63 slices   45 frames   128x128   Bed Position: 55.96 cm
+Right-on-Left
+Created with: 
+Date: 
+Max = 2535.764648   Min = -1872.221802
+Frame length = 30.000 sec
+Start time = 18.933 sec
+Archive Type: 962 3d unknown ramp
+number of frames: 45
+------------------------------------------------------------------
+p8047gluc1.v     06/20/2012, 10:40:43  63 slices   45 frames  (C-11)
+Frame  Start  Duration (sec)
+-----  -----  --------
+  2       -0    30.0
+  3       30    30.0
+  4       60    30.0
+  5       90    30.0
+  6      120    30.0
+  7      150    30.0
+  8      180    30.0
+  9      210    30.0
+ 10      240    30.0
+ 11      270    30.0
+ 12      300    30.0
+ 13      330    30.0
+ 14      360    30.0
+ 15      390    30.0
+ 16      420    30.0
+ 17      450    30.0
+ 18      480    60.0
+ 19      540    60.0
+ 20      600    60.0
+ 21      660    60.0
+ 22      720    60.0
+ 23      780    60.0
+ 24      840    60.0
+ 25      900    60.0
+ 26      960   120.0
+ 27     1080   120.0
+ 28     1200   120.0
+ 29     1320   120.0
+ 30     1440   120.0
+ 31     1560   120.0
+ 32     1680   120.0
+ 33     1800   120.0
+ 34     1920   120.0
+ 35     2040   120.0
+ 36     2160   120.0
+ 37     2280   120.0
+ 38     2400   120.0
+ 39     2520   120.0
+ 40     2640   120.0
+ 41     2760   120.0
+ 42     2880   180.0
+ 43     3060   180.0
+ 44     3240   180.0
+ 45     3420   180.0
+aborting frame 1
+converted frame 2
+converted frame 3
+converted frame 4
+converted frame 5
+converted frame 6
+converted frame 7
+converted frame 8
+converted frame 9
+converted frame 10
+converted frame 11
+converted frame 12
+converted frame 13
+converted frame 14
+converted frame 15
+converted frame 16
+converted frame 17
+converted frame 18
+converted frame 19
+converted frame 20
+converted frame 21
+converted frame 22
+converted frame 23
+converted frame 24
+converted frame 25
+converted frame 26
+converted frame 27
+converted frame 28
+converted frame 29
+converted frame 30
+converted frame 31
+converted frame 32
+converted frame 33
+converted frame 34
+converted frame 35
+converted frame 36
+converted frame 37
+converted frame 38
+converted frame 39
+converted frame 40
+converted frame 41
+converted frame 42
+converted frame 43
+converted frame 44
+converted frame 45
+endrec

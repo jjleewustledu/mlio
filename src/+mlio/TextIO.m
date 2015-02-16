@@ -10,8 +10,7 @@ classdef TextIO < mlio.AbstractIO
  	%  $Id$
 
     properties (Constant)
-        FILETYPE     = 'Plain Text';
-        FILETYPE_EXT = '.txt';
+        FILETYPE_EXT = {'.txt' '.rec'}; % supported file extension; all should be plain text
     end
     
     properties (Dependent)
@@ -20,10 +19,10 @@ classdef TextIO < mlio.AbstractIO
     end
     
 	methods (Static)
-        function this  = load(fn) 
+        function this = load(fn) 
             assert(lexist(fn, 'file'));
             [pth, fp, fext] = fileparts(fn); 
-            if (strcmp(mlio.TextIO.FILETYPE_EXT, fext) || ...
+            if (lstrfind(fext, mlio.TextIO.FILETYPE_EXT) || ...
                 isempty(fext))
                 this = mlio.TextIO.loadText(fn); 
                 this.fqfilename = fullfile(pth, [fp fext]);
@@ -31,7 +30,7 @@ classdef TextIO < mlio.AbstractIO
             end
             error('mlio:unsupportedParam', 'TextIO.load does not support file-extension .%s', fext);
         end
-        function ca    = textfileToCell(fqfn, eol)  %#ok<INUSD>
+        function ca   = textfileToCell(fqfn, eol) %#ok<INUSD>
             if (~exist('eol','var'))
                 fget = @fgetl;
             else
@@ -53,15 +52,15 @@ classdef TextIO < mlio.AbstractIO
                 fprintf('mlio.TextIO.textfileToCell:  exception thrown while reading \n\t%s\n\tME.identifier->%s', fqfn, ME.identifier);
             end
         end
-        function str   = textfileToString(fqfn)
+        function str  = textfileToString(fqfn)
             str = strjoin( ...
                   mlio.TextIO.textfileToCell(fqfn, '\n'), '');
         end
-        function tf    = textfileStrcmp(str, fqfn, varargin)
+        function tf   = textfileStrcmp(str, fqfn, varargin)
             tf = strcmp(strtrim(str), ...
                         strtrim(mlio.TextIO.textfileToString(fqfn, varargin{:})));
         end
-        function clls  = nonEmptyCells(clls)
+        function clls = nonEmptyCells(clls)
             cal = mlpatterns.CellArrayList;
             cal.add(clls);
             for c = 1:length(cal)
@@ -76,16 +75,16 @@ classdef TextIO < mlio.AbstractIO
     end
     
     methods
-        function c     = get.contents(this)
+        function c  = get.contents(this)
             c = char(this.contents_);
         end
-        function d     = get.descrip(this)
+        function d  = get.descrip(this)
             d = sprintf('%s read %s on %s', class(this), this.fqfilename, datestr(now));
         end
-        function ch    = char(this)
+        function ch = char(this)
             ch = this.contents;
         end
-        function         save(this) 
+        function      save(this) 
             assert(~isempty(this.fqfilename));
             if (this.noclobber && lexist(this.fqfilename, 'file'))
                 error('mlio:IOErr', 'TextIO.save.fqfilename->%s already exists; stopping...%s', this.fqfilename); end
@@ -117,8 +116,7 @@ classdef TextIO < mlio.AbstractIO
                 handexcept(ME);
             end            
         end
-    end
-    
+    end    
 
 	%  Created with Newcl by John J. Lee after newfcn by Frank Gonzalez-Morphy 
 end
