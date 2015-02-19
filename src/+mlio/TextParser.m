@@ -75,6 +75,11 @@ classdef TextParser < mlio.AbstractIO
         function ch = char(this)
             ch = strjoin(this.cellContents_);
         end
+        function fprintf(this)
+            for c = 1:this.length
+                fprintf('%s\n', this.cellContents{c});
+            end
+        end
         function save(~)
             warning('mlio:notImplemented', 'TextParser.save');
         end
