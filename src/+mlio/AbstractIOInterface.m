@@ -16,6 +16,11 @@ classdef AbstractIOInterface < mlio.IOInterface
             this.fqfilename = fqfn;
             this.save;
         end
+        function this = saveasx(this, fqfn, x)
+            this.fqfileprefix = fqfn(1:strfind(fqfn, x)-1);
+            this.filesuffix_ = x;
+            this.save;
+        end
     end
     
     properties (Access = 'protected')

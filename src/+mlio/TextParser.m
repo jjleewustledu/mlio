@@ -48,6 +48,20 @@ classdef TextParser < mlio.AbstractIO
             end
             error('mlio:unsupportedParam', 'TextParser.load does not support file-extension .%s', fext);
         end
+        function this = loadx(fn, ext)    
+            if (~lstrfind(fn, ext))
+                if (~strcmp('.', ext(1)))
+                    ext = ['.' ext];
+                end
+                fn = [fn ext];
+            end
+            assert(lexist(fn, 'file'));
+            [pth, fp, fext] = filepartsx(fn, ext); 
+            this = mlio.TextParser.loadText(fn);
+            this.filepath_   = pth;
+            this.fileprefix_ = fp;
+            this.filesuffix_ = fext;
+        end
         function ca   = textfileToCell(fqfn, eol)  %#ok<INUSD>
             if (~exist('eol','var'))
                 fget = @fgetl;
@@ -80,8 +94,16 @@ classdef TextParser < mlio.AbstractIO
                 fprintf('%s\n', this.cellContents{c});
             end
         end
-        function save(~)
-            warning('mlio:notImplemented', 'TextParser.save');
+        function save(this)
+            try
+                fid = fopen(this.fqfilename, 'w');
+                for c = 1:length(this.cellContents_)
+                    fprintf(fid, '%s\n', this.cellContents_{c});
+                end
+                fclose(fid);
+            catch ME
+                handexcept(ME);
+            end
         end
         
         function sv = parseAssignedString(this, fieldName)
