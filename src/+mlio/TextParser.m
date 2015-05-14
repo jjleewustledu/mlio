@@ -12,7 +12,8 @@ classdef TextParser < mlio.AbstractIO
 
     properties (Constant)
         FILETYPE_EXT   = {'.txt' '.rec' '.log' '.out'} % supported file extension; all should be plain text
-        ENG_PATT = '\-?\d+\.?\d*E?D?\+?\-?\d*'
+        ENG_PATT       = '\-?\d+\.?\d*E?D?\+?\-?\d*'
+        ENG_PATT_LOW   = '\-?\d+\.?\d*e?d?\+?\-?\d*'
     end
     
     properties (Dependent)
@@ -85,6 +86,7 @@ classdef TextParser < mlio.AbstractIO
             end
         end
     end
+    
     methods
         function ch = char(this)
             ch = strjoin(this.cellContents_);
@@ -141,6 +143,7 @@ classdef TextParser < mlio.AbstractIO
             names = regexp(line, sprintf('%s\\s+(?<value1>%s)\\s+(?<value2>%s)', fieldName, this.ENG_PATT, this.ENG_PATT), 'names');
             nv = str2num(strtrim([names.value1 ' ' names.value2])); %#ok<ST2NM>
         end
+        
         function [parsed,line] = findFirstCell(this, fieldName)
             assert(ischar(fieldName));
             parsed = [];
