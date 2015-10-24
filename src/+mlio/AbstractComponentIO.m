@@ -1,7 +1,7 @@
-classdef AbstractComponentIO <  mlio.AbstractIOInterface
+classdef AbstractComponentIO <  mlio.AbstractSimpleIO
 	%% ABSTRACTCOMPONENTIO provides thin, minimalist methods for I/O for composite design patterns.  
     %  As compared to AbstractIO, AbstractComponentIO forwards property setters/getters to a cachedNext-property.
-    %  Both conform to the AbstractIOInterface.
+    %  Both conform conform to AbstractSimpleIO.
     %  Yet abstract:  IOInterface static methods load; methods save
 
 	%  $Revision: 2467 $

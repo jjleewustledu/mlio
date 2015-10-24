@@ -1,5 +1,6 @@
-classdef LogParser < mlio.AbstractIO 
-	%% LOGPARSER   
+classdef LogParser < mlio.AbstractParser
+	%% LOGPARSER parses numerical values to the right or left of a text field-name.
+    %  For more fine-grained parsing features, see TextParser.
 
 	%  $Revision$ 
  	%  was created $Date$ 
@@ -7,33 +8,7 @@ classdef LogParser < mlio.AbstractIO
  	%  last modified $LastChangedDate$ 
  	%  and checked into repository $URL$,  
  	%  developed on Matlab 8.5.0.197613 (R2015a) 
- 	%  $Id$ 
- 	 
-
-	properties (Constant)		 
-        FILETYPE_EXT   = {'.txt' '.rec' '.log' '.out'} % supported file extension; all should be plain text
-        ENG_PATT_UP    = '\-?\d+\.?\d*E?D?\+?\-?\d*'
-        ENG_PATT_LOW   = '\-?\d+\.?\d*e?d?\+?\-?\d*'
- 	end 
-
-    properties (Dependent)
-        cellContents
-        descrip
-        length
-    end
-    
-	methods % GET
-        function c = get.cellContents(this)
-            assert(~isempty(this.cellContents_));
-            c = this.cellContents_;
-        end
-        function d = get.descrip(this)
-            d = sprintf('%s read %s on %s', class(this), this.fqfilename, datestr(now));
-        end
-        function l = get.length(this)
-            l = length(this.cellContents);
-        end
-    end    
+ 	%  $Id$   
     
 	methods (Static)
         function this = load(fn)
@@ -65,27 +40,7 @@ classdef LogParser < mlio.AbstractIO
         end
     end
     
-	methods 		 
-        function ch = char(this)
-            ch = strjoin(this.cellContents_);
-        end
-        function fprintf(this)
-            for c = 1:this.length
-                fprintf('%s\n', this.cellContents{c});
-            end
-        end
-        function save(this)
-            try
-                fid = fopen(this.fqfilename, 'w');
-                for c = 1:length(this.cellContents_)
-                    fprintf(fid, '%s\n', this.cellContents_{c});
-                end
-                fclose(fid);
-            catch ME
-                handexcept(ME);
-            end
-        end
-        
+	methods 	
         function [nv,idx1] = rightSideNumeric(this, fieldName, varargin)
             p = inputParser;
             addRequired(p, 'fieldName', @ischar);
@@ -135,37 +90,11 @@ classdef LogParser < mlio.AbstractIO
     
     %% PROTECTED
     
-    properties (Access = 'protected')
-        cellContents_
-    end
-    
     methods (Static, Access = 'protected')
         function this = loadText(fn)
             import mlio.*;
             this = LogParser;
             this.cellContents_ = LogParser.textfileToCell(fn);
-        end
-        function ca   = textfileToCell(fqfn, eol)  %#ok<INUSD>
-            if (~exist('eol','var'))
-                fget = @fgetl;
-            else
-                fget = @fgets;
-            end
-            ca = {[]};
-            try
-                fid = fopen(fqfn);
-                i   = 1;
-                while 1
-                    tline = fget(fid);
-                    if ~ischar(tline), break, end
-                    ca{i} = tline;
-                    i     = i + 1;
-                end
-                fclose(fid);
-                assert(~isempty(ca) && ~isempty(ca{1}))
-            catch ME
-                fprintf('mlio.TextIO.textfileToCell:  exception thrown while reading \n\t%s\n\tME.identifier->%s', fqfn, ME.identifier);
-            end
         end
     end
 

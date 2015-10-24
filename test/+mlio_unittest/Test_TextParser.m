@@ -38,11 +38,6 @@ classdef Test_TextParser < matlab.unittest.TestCase
             this.assertClass(tp, 'mlio.TextParser');
             this.assertNotEmpty(tp.cellContents);
         end
-        function test_textfileToCell(this)
-            c = mlio.TextParser.textfileToCell(this.textFqfilename);
-            this.assertClass(c, 'cell');
-            this.assertEqual(length(c), 122);
-        end  
         function test_char(this)
             c = char(this.textParser);
             this.assertEqual(c(1:14), 'rec p8047gluc1');

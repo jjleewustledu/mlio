@@ -1,4 +1,4 @@
-classdef AbstractIO < mlio.AbstractIOInterface    
+classdef AbstractIO < mlio.AbstractSimpleIO    
 	%% ABSTRACTIO provides thin, minimalist methods for I/O.  Agnostic to all other object characteristics.
     %  Yet abstract:  static methods load; methods save
     

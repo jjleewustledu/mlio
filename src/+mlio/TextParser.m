@@ -1,5 +1,6 @@
-classdef TextParser < mlio.AbstractIO 
-	%% TEXTPARSER   
+classdef TextParser < mlio.AbstractParser
+	%% TEXTPARSER parses strings and numbers arranged in various ways with identifying field-names.  
+    %  For simpler parsing of numbers next to a field-name, see LogParser.
 
 	%  $Revision$ 
  	%  was created $Date$ 
@@ -8,32 +9,6 @@ classdef TextParser < mlio.AbstractIO
  	%  and checked into repository $URL$,  
  	%  developed on Matlab 8.4.0.150421 (R2014b) 
  	%  $Id$  	 
-
-
-    properties (Constant)
-        FILETYPE_EXT   = {'.txt' '.rec' '.log' '.out'} % supported file extension; all should be plain text
-        ENG_PATT       = '\-?\d+\.?\d*E?D?\+?\-?\d*'
-        ENG_PATT_LOW   = '\-?\d+\.?\d*e?d?\+?\-?\d*'
-    end
-    
-    properties (Dependent)
-        cellContents
-        descrip
-        length
-    end
-    
-	methods % GET
-        function c = get.cellContents(this)
-            assert(~isempty(this.cellContents_));
-            c = this.cellContents_;
-        end
-        function d = get.descrip(this)
-            d = sprintf('%s read %s on %s', class(this), this.fqfilename, datestr(now));
-        end
-        function l = get.length(this)
-            l = length(this.cellContents);
-        end
-    end    
 
 	methods (Static)
         function this = load(fn) 
@@ -63,51 +38,9 @@ classdef TextParser < mlio.AbstractIO
             this.fileprefix_ = fp;
             this.filesuffix_ = fext;
         end
-        function ca   = textfileToCell(fqfn, eol)  %#ok<INUSD>
-            if (~exist('eol','var'))
-                fget = @fgetl;
-            else
-                fget = @fgets;
-            end
-            ca = {[]};
-            try
-                fid = fopen(fqfn);
-                i   = 1;
-                while 1
-                    tline = fget(fid);
-                    if ~ischar(tline), break, end
-                    ca{i} = tline;
-                    i     = i + 1;
-                end
-                fclose(fid);
-                assert(~isempty(ca) && ~isempty(ca{1}))
-            catch ME
-                fprintf('mlio.TextIO.textfileToCell:  exception thrown while reading \n\t%s\n\tME.identifier->%s', fqfn, ME.identifier);
-            end
-        end
     end
     
     methods
-        function ch = char(this)
-            ch = strjoin(this.cellContents_);
-        end
-        function fprintf(this)
-            for c = 1:this.length
-                fprintf('%s\n', this.cellContents{c});
-            end
-        end
-        function save(this)
-            try
-                fid = fopen(this.fqfilename, 'w');
-                for c = 1:length(this.cellContents_)
-                    fprintf(fid, '%s\n', this.cellContents_{c});
-                end
-                fclose(fid);
-            catch ME
-                handexcept(ME);
-            end
-        end
-        
         function sv = parseAssignedString(this, fieldName)
             line = this.findFirstCell(fieldName);
             names = regexp(line, sprintf('%s\\s*=\\s*(?<valueName>.+$)', fieldName), 'names');
@@ -115,7 +48,7 @@ classdef TextParser < mlio.AbstractIO
         end
         function nv = parseAssignedNumeric(this, fieldName)
             line = this.findFirstCell(fieldName);
-            names = regexp(line, sprintf('%s\\s*=\\s*(?<valueName>%s)', fieldName, this.ENG_PATT), 'names');
+            names = regexp(line, sprintf('%s\\s*=\\s*(?<valueName>%s)', fieldName, this.ENG_PATT_UP), 'names');
             nv = str2num(strtrim(names.valueName)); %#ok<ST2NM>
         end           
         function sv = parseColonString(this, fieldName)
@@ -125,22 +58,22 @@ classdef TextParser < mlio.AbstractIO
         end
         function nv = parseColonNumeric(this, fieldName)
             line = this.findFirstCell(fieldName);
-            names = regexp(line, sprintf('%s:\\s*(?<valueName>%s)', fieldName, this.ENG_PATT), 'names');
+            names = regexp(line, sprintf('%s:\\s*(?<valueName>%s)', fieldName, this.ENG_PATT_UP), 'names');
             nv = str2num(strtrim(names.valueName)); %#ok<ST2NM>
         end 
         function nv = parseLeftAssociatedNumeric(this, fieldName)
             line = this.findFirstCell(fieldName);
-            names = regexp(line, sprintf('(?<valueName>%s)\\s+%s', this.ENG_PATT, fieldName), 'names');
+            names = regexp(line, sprintf('(?<valueName>%s)\\s+%s', this.ENG_PATT_UP, fieldName), 'names');
             nv = str2num(strtrim(names.valueName)); %#ok<ST2NM>
         end
         function nv = parseRightAssociatedNumeric(this, fieldName)
             line = this.findFirstCell(fieldName);
-            names = regexp(line, sprintf('%s\\s+(?<value1>%s)', fieldName, this.ENG_PATT), 'names');
+            names = regexp(line, sprintf('%s\\s+(?<value1>%s)', fieldName, this.ENG_PATT_UP), 'names');
             nv = str2num(strtrim(names.value1)); %#ok<ST2NM>
         end
         function nv = parseRightAssociatedNumeric2(this, fieldName)
             line = this.findFirstCell(fieldName);
-            names = regexp(line, sprintf('%s\\s+(?<value1>%s)\\s+(?<value2>%s)', fieldName, this.ENG_PATT, this.ENG_PATT), 'names');
+            names = regexp(line, sprintf('%s\\s+(?<value1>%s)\\s+(?<value2>%s)', fieldName, this.ENG_PATT_UP, this.ENG_PATT_UP), 'names');
             nv = str2num(strtrim([names.value1 ' ' names.value2])); %#ok<ST2NM>
         end
         
@@ -157,13 +90,9 @@ classdef TextParser < mlio.AbstractIO
         end
     end 
     
-    %% PRIVATE
+    %% PROTECTED
     
-    properties (Access = 'private')
-        cellContents_
-    end
-    
-    methods (Static, Access = 'private')
+    methods (Static, Access = 'protected')
         function this = loadText(fn)
             import mlio.*;
             this = TextParser;
