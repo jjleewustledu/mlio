@@ -24,7 +24,7 @@ classdef AbstractIO < mlio.AbstractSimpleIO
     
     methods %% Set/Get
         function this = set.filename(this, fn)
-            [this.filepath,this.fileprefix,this.filesuffix] = gzfileparts(fn);
+            [this.filepath,this.fileprefix,this.filesuffix] = myfileparts(fn);
         end
         function fn   = get.filename(this)
             fn = [this.fileprefix this.filesuffix];
@@ -40,7 +40,7 @@ classdef AbstractIO < mlio.AbstractSimpleIO
         end
         function this = set.fileprefix(this, fp)
             assert(ischar(fp));
-            [~,this.fileprefix_] = gzfileparts(fp);
+            [~,this.fileprefix_] = myfileparts(fp);
         end
         function fp   = get.fileprefix(this)
             fp = this.fileprefix_;
@@ -57,13 +57,13 @@ classdef AbstractIO < mlio.AbstractSimpleIO
             fs = this.filesuffix_;
         end
         function this = set.fqfilename(this, fqfn)
-            [this.filepath,this.fileprefix,this.filesuffix] = gzfileparts(fqfn);           
+            [this.filepath,this.fileprefix,this.filesuffix] = myfileparts(fqfn);           
         end
         function fqfn = get.fqfilename(this)
             fqfn = [this.fqfileprefix this.filesuffix];
         end
         function this = set.fqfileprefix(this, fqfp)
-            [this.filepath, this.fileprefix] = gzfileparts(fqfp);
+            [this.filepath, this.fileprefix] = myfileparts(fqfp);
         end
         function fqfp = get.fqfileprefix(this)
             fqfp = fullfile(this.filepath, this.fileprefix);

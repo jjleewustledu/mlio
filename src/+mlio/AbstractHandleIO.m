@@ -1,4 +1,4 @@
-classdef AbstractHandleIO < handle %%% & mlio.IOInterface
+classdef AbstractHandleIO < handle
     
     properties (Dependent)
         filename
@@ -14,7 +14,7 @@ classdef AbstractHandleIO < handle %%% & mlio.IOInterface
     
     methods %% Set/Get
         function        set.filename(this, fn)
-            [this.filepath,this.fileprefix,this.filesuffix] = gzfileparts(fn);
+            [this.filepath,this.fileprefix,this.filesuffix] = myfileparts(fn);
         end
         function fn   = get.filename(this)
             fn = [this.fileprefix this.filesuffix];
@@ -30,7 +30,7 @@ classdef AbstractHandleIO < handle %%% & mlio.IOInterface
         end
         function        set.fileprefix(this, fp)
             assert(ischar(fp));
-            [~,this.fileprefix_] = gzfileparts(fp);
+            [~,this.fileprefix_] = myfileparts(fp);
         end
         function fp   = get.fileprefix(this)
             fp = this.fileprefix_;
@@ -47,13 +47,13 @@ classdef AbstractHandleIO < handle %%% & mlio.IOInterface
             fs = this.filesuffix_;
         end
         function        set.fqfilename(this, fqfn)
-            [this.filepath,this.fileprefix,this.filesuffix] = gzfileparts(fqfn);           
+            [this.filepath,this.fileprefix,this.filesuffix] = myfileparts(fqfn);           
         end
         function fqfn = get.fqfilename(this)
             fqfn = [this.fqfileprefix this.filesuffix];
         end
         function        set.fqfileprefix(this, fqfp)
-            [this.filepath, this.fileprefix] = gzfileparts(fqfp);
+            [this.filepath, this.fileprefix] = myfileparts(fqfp);
         end
         function fqfp = get.fqfileprefix(this)
             fqfp = fullfile(this.filepath, this.fileprefix);
