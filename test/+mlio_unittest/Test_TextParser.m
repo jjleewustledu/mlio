@@ -27,28 +27,28 @@ classdef Test_TextParser < matlab.unittest.TestCase
         end
         function test_cellContents(this)
             cc = this.textParser.cellContents;
-            this.assertEqual(cc{2}, 'ecattoanalyze p8047gluc1.v');
+            this.verifyEqual(cc{2}, 'ecattoanalyze p8047gluc1.v');
         end
         function test_descrip(this)
-            this.assertTrue(lstrfind(this.textParser.descrip, 'mlio.TextParser'));
-            this.assertTrue(lstrfind(this.textParser.descrip, this.textFqfilename));
+            this.verifyTrue(lstrfind(this.textParser.descrip, 'mlio.TextParser'));
+            this.verifyTrue(lstrfind(this.textParser.descrip, this.textFqfilename));
         end
         function test_load(this)
             tp = mlio.TextParser.load(this.textFqfilename);
-            this.assertClass(tp, 'mlio.TextParser');
-            this.assertNotEmpty(tp.cellContents);
+            this.verifyClass(tp, 'mlio.TextParser');
+            this.verifyNotEmpty(tp.cellContents);
         end
         function test_char(this)
             c = char(this.textParser);
-            this.assertEqual(c(1:14), 'rec p8047gluc1');
+            this.verifyEqual(c(1:14), 'rec p8047gluc1');
         end
         function test_parseAssignedString(this)
             v = this.textParser.parseAssignedString('Start time');
-            this.assertEqual(v, '18.933 sec');
+            this.verifyEqual(v, '18.933 sec');
         end
         function test_parseAssignedNumeric(this)
             nv = this.textParser.parseAssignedNumeric('Start time');
-            this.assertEqual(nv, 18.933);
+            this.verifyEqual(nv, 18.933);
         end
     end
        
