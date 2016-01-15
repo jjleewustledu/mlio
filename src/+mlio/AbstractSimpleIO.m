@@ -1,6 +1,6 @@
 classdef AbstractSimpleIO < mlio.IOInterface
 	%% ABSTRACTSIMPLEIO implements highly conserved portions of IOInterface;
-    %  forks from AbstractIO to support AbstractComponentIO
+    %  forks from AbstractIO to support AbstractCompositeIO
     %  Yet abstract:  IOInterface static methods load; methods save
     
 	%  $Revision$

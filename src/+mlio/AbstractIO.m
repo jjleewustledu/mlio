@@ -47,13 +47,12 @@ classdef AbstractIO < mlio.AbstractSimpleIO
         end
         function this = set.filesuffix(this, fs)
             assert(ischar(fs));
+            if (~isempty(fs) && ~strcmp('.', fs(1)))
+                fs = ['.' fs];
+            end
             this.filesuffix_ = fs;
         end
         function fs   = get.filesuffix(this)
-            if (isempty(this.filesuffix_))
-                fs = ''; return; end
-            if (~strcmp('.', this.filesuffix_(1)))
-                this.filesuffix_ = ['.' this.filesuffix_]; end
             fs = this.filesuffix_;
         end
         function this = set.fqfilename(this, fqfn)

@@ -1,16 +1,14 @@
-classdef AbstractComponentIO <  mlio.AbstractSimpleIO
+classdef AbstractCompositeIO <  mlio.AbstractSimpleIO
 	%% ABSTRACTCOMPONENTIO provides thin, minimalist methods for I/O for composite design patterns.  
-    %  As compared to AbstractIO, AbstractComponentIO forwards property setters/getters to a cachedNext-property.
+    %  As compared to AbstractIO, AbstractCompositeIO forwards property setters/getters to a cachedNext-property.
     %  Both conform conform to AbstractSimpleIO.
-    %  Yet abstract:  IOInterface static methods load; methods save
 
 	%  $Revision: 2467 $
  	%  was created $Date: 2013-08-10 21:27:41 -0500 (Sat, 10 Aug 2013) $
  	%  by $Author: jjlee $, 
  	%  last modified $LastChangedDate: 2013-08-10 21:27:41 -0500 (Sat, 10 Aug 2013) $
- 	%  and checked into repository $URL: file:///Users/jjlee/Library/SVNRepository_2012sep1/mpackages/mlfourd/src/+mlfourd/trunk/AbstractComponent.m $, 
  	%  developed on Matlab 8.1.0.604 (R2013a)
- 	%  $Id: AbstractComponent.m 2467 2013-08-11 02:27:41Z jjlee $
+ 	%  $Id: AbstractComposite.m 2467 2013-08-11 02:27:41Z jjlee $
 
     properties (Abstract)
         cachedNext
