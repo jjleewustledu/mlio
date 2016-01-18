@@ -23,7 +23,7 @@ classdef AbstractSimpleIO < mlio.IOInterface
         end
     end
     
-    properties (Access = 'protected')
+    properties (Access = protected)
         filepath_   = '';
         fileprefix_ = '';
         filesuffix_ = '';
