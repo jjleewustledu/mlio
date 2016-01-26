@@ -24,6 +24,7 @@ classdef AbstractIO < mlio.AbstractSimpleIO
     
     methods %% Set/Get
         function this = set.filename(this, fn)
+            assert(ischar(fn));
             [this.filepath,this.fileprefix,this.filesuffix] = myfileparts(fn);
         end
         function fn   = get.filename(this)
@@ -35,12 +36,14 @@ classdef AbstractIO < mlio.AbstractSimpleIO
         end
         function pth  = get.filepath(this)
             if (isempty(this.filepath_))
-                this.filepath_ = pwd; end
+                this.filepath_ = pwd; 
+            end
             pth = this.filepath_;
         end
         function this = set.fileprefix(this, fp)
             assert(ischar(fp));
-            [~,this.fileprefix_] = myfileparts(fp);
+            assert(~isempty(fp));
+            this.fileprefix_ = fp;
         end
         function fp   = get.fileprefix(this)
             fp = this.fileprefix_;
@@ -50,19 +53,40 @@ classdef AbstractIO < mlio.AbstractSimpleIO
             if (~isempty(fs) && ~strcmp('.', fs(1)))
                 fs = ['.' fs];
             end
-            this.filesuffix_ = fs;
+            [~,~,this.filesuffix_] = myfileparts(fs);
         end
         function fs   = get.filesuffix(this)
+            if (isempty(this.filesuffix_))
+                fs = ''; return; end
+            if (~strcmp('.', this.filesuffix_(1)))
+                this.filesuffix_ = ['.' this.filesuffix_]; end
             fs = this.filesuffix_;
         end
         function this = set.fqfilename(this, fqfn)
-            [this.filepath,this.fileprefix,this.filesuffix] = myfileparts(fqfn);           
+            assert(ischar(fqfn));
+            [p,f,e] = myfileparts(fqfn);
+            if (~isempty(p))
+                this.filepath = p;
+            end
+            if (~isempty(f))
+                this.fileprefix = f;
+            end
+            if (~isempty(e))
+                this.filesuffix = e;
+            end        
         end
         function fqfn = get.fqfilename(this)
             fqfn = [this.fqfileprefix this.filesuffix];
         end
         function this = set.fqfileprefix(this, fqfp)
-            [this.filepath, this.fileprefix] = myfileparts(fqfp);
+            assert(ischar(fqfp));
+            [p,f] = myfileparts(fqfp);            
+            if (~isempty(p))
+                this.filepath = p;
+            end
+            if (~isempty(f))
+                this.fileprefix = f;
+            end
         end
         function fqfp = get.fqfileprefix(this)
             fqfp = fullfile(this.filepath, this.fileprefix);

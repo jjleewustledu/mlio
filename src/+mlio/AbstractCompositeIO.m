@@ -22,40 +22,40 @@ classdef AbstractCompositeIO < mlio.IOInterface
 
     methods %% Set/Get 
         function this = set.filename(this, fn)
-            this = this.inner_.setter('filename', fn);
+            this = this.innerCellComp_.setter('filename', fn);
         end
         function fn   = get.filename(this)
-            fn = this.inner_.getter('filename');
+            fn = this.innerCellComp_.getter('filename');
         end
         function this = set.filepath(this, pth)
-            this = this.inner_.setter('filepath', pth);
+            this = this.innerCellComp_.setter('filepath', pth);
         end
         function pth  = get.filepath(this)
-            pth = this.inner_.getter('filepath');
+            pth = this.innerCellComp_.getter('filepath');
         end
         function this = set.fileprefix(this, fp)
-            this = this.inner_.setter('fileprefix', fp);
+            this = this.innerCellComp_.setter('fileprefix', fp);
         end
         function fp   = get.fileprefix(this)
-            fp = this.inner_.getter('fileprefix');
+            fp = this.innerCellComp_.getter('fileprefix');
         end
         function this = set.filesuffix(this, fs)
-            this = this.inner_.setter('filesuffix', fs);
+            this = this.innerCellComp_.setter('filesuffix', fs);
         end
         function fs   = get.filesuffix(this)
-            fs = this.inner_.getter('filesuffix');
+            fs = this.innerCellComp_.getter('filesuffix');
         end        
         function this = set.fqfilename(this, fqfn)
-            this = this.inner_.setter('fqfilename', fqfn);
+            this = this.innerCellComp_.setter('fqfilename', fqfn);
         end
         function fqfn = get.fqfilename(this)
-            fqfn = this.inner_.getter('fqfilename');
+            fqfn = this.innerCellComp_.getter('fqfilename');
         end
         function this = set.fqfileprefix(this, fqfp)
-            this = this.inner_.setter('fqfileprefix', fqfp);
+            this = this.innerCellComp_.setter('fqfileprefix', fqfp);
         end
         function fqfp = get.fqfileprefix(this)
-            fqfp = this.inner_.getter('fqfileprefix');
+            fqfp = this.innerCellComp_.getter('fqfileprefix');
         end
         function this = set.fqfn(this, f)
             this.fqfilename = f;
@@ -70,29 +70,29 @@ classdef AbstractCompositeIO < mlio.IOInterface
             f = this.fqfileprefix;
         end
         function this = set.noclobber(this, nc)
-            this = this.inner_.setter('noclobber', nc);
+            this = this.innerCellComp_.setter('noclobber', nc);
         end
         function tf   = get.noclobber(this)
-            tf = this.inner_.getter('noclobber');
+            tf = this.innerCellComp_.getter('noclobber');
         end
     end
     
     methods 
         function this = saveas(this, fqfn)
-            this = this.inner_.setter('fqfilename', fqfn);
-            this = this.inner_.fevalThis('save');
+            this = this.innerCellComp_.setter('fqfilename', fqfn);
+            this = this.innerCellComp_.fevalThis('save');
         end
         function this = saveasx(this, fqfn, x)
-            this = this.inner_.setter('fqfilename', fqfn);
-            this = this.inner_.setter('filesuffix', x);
-            this = this.inner_.fevalThis('save');
+            this = this.innerCellComp_.setter('fqfilename', fqfn);
+            this = this.innerCellComp_.setter('filesuffix', x);
+            this = this.innerCellComp_.fevalThis('save');
         end
     end    
 
     %% PROTECTED
     
     properties (Abstract, Access = protected)
-        inner_
+        innerCellComp_
     end
     
 	%  Created with Newcl by John J. Lee after newfcn by Frank Gonzalez-Morphy

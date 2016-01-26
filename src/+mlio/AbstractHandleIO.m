@@ -14,6 +14,7 @@ classdef AbstractHandleIO < handle
     
     methods %% Set/Get
         function        set.filename(this, fn)
+            assert(ischar(fn));
             [this.filepath,this.fileprefix,this.filesuffix] = myfileparts(fn);
         end
         function fn   = get.filename(this)
@@ -30,14 +31,18 @@ classdef AbstractHandleIO < handle
         end
         function        set.fileprefix(this, fp)
             assert(ischar(fp));
-            [~,this.fileprefix_] = myfileparts(fp);
+            assert(~isempty(fp));
+            this.fileprefix_ = fp;
         end
         function fp   = get.fileprefix(this)
             fp = this.fileprefix_;
         end
         function        set.filesuffix(this, fs)
             assert(ischar(fs));
-            this.filesuffix_ = fs;
+            if (~isempty(fs) && ~strcmp('.', fs(1)))
+                fs = ['.' fs];
+            end
+            [~,~,this.filesuffix_] = myfileparts(fs);
         end
         function fs   = get.filesuffix(this)
             if (isempty(this.filesuffix_))
@@ -47,13 +52,30 @@ classdef AbstractHandleIO < handle
             fs = this.filesuffix_;
         end
         function        set.fqfilename(this, fqfn)
-            [this.filepath,this.fileprefix,this.filesuffix] = myfileparts(fqfn);           
+            assert(ischar(fqfn));
+            [p,f,e] = myfileparts(fqfn);
+            if (~isempty(p))
+                this.filepath = p;
+            end
+            if (~isempty(f))
+                this.fileprefix = f;
+            end
+            if (~isempty(e))
+                this.filesuffix = e;
+            end           
         end
         function fqfn = get.fqfilename(this)
             fqfn = [this.fqfileprefix this.filesuffix];
         end
         function        set.fqfileprefix(this, fqfp)
-            [this.filepath, this.fileprefix] = myfileparts(fqfp);
+            assert(ischar(fqfp));
+            [p,f] = myfileparts(fqfp);            
+            if (~isempty(p))
+                this.filepath = p;
+            end
+            if (~isempty(f))
+                this.fileprefix = f;
+            end
         end
         function fqfp = get.fqfileprefix(this)
             fqfp = fullfile(this.filepath, this.fileprefix);
@@ -84,13 +106,18 @@ classdef AbstractHandleIO < handle
             this.fqfilename = fqfn;
             this.save;
         end
+        function saveasx(this, fqfn, x)
+            this.fqfileprefix = fqfn(1:strfind(fqfn, x)-1);
+            this.filesuffix_ = x;
+            this.save;
+        end
     end
     
     properties (Access = 'protected')
         filepath_
         fileprefix_
         filesuffix_
-        noclobber_ = false;
+        noclobber_ = true;
     end
 
 end

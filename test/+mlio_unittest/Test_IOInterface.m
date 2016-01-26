@@ -22,6 +22,7 @@ classdef Test_IOInterface < mlfourd_unittest.Test_mlfourd
  		% N.B. (Static, Abstract, Access='', Hidden, Sealed) 
 
          function test_saveas(this)
+             deleteExisting(fullfile(this.fslPath, 'Text_IOInterface_test_saveas.nii.gz'));
              this.niid.saveas('Text_IOInterface_test_saveas');
              this.verifyTrue(lexist('Text_IOInterface_test_saveas.nii.gz', 'file'));
              deleteExisting('Text_IOInterface_test_saveas.niid.gz');
