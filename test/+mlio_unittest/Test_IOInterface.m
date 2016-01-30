@@ -37,9 +37,16 @@ classdef Test_IOInterface < mlfourd_unittest.Test_mlfourd
         function setupIOInterface(this)
   			cd(this.fslPath);
             this.niid = mlfourd.NIfTId.load(this.tr_fqfn);
+            this.addTeardown(@this.deleteFiles)
         end
     end
     
+    methods (Access = private)
+        function deleteFiles(this)
+            deleteExisting(this.test_fqfn);
+            deleteExisting2(fullfile(this.fslPath, 'Text_IOInterface*'));
+        end
+    end    
 
 	%  Created with Newcl by John J. Lee after newfcn by Frank Gonzalez-Morphy 
 end

@@ -80,7 +80,7 @@ classdef AbstractIO < mlio.AbstractSimpleIO
         end
         function this = set.fqfileprefix(this, fqfp)
             assert(ischar(fqfp));
-            [p,f] = myfileparts(fqfp);            
+            [p,f] = fileprefixparts(fqfp);            
             if (~isempty(p))
                 this.filepath = p;
             end

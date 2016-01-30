@@ -19,14 +19,9 @@ classdef IOInterface
         fqfn
         fqfp
     end
-
-    methods (Abstract, Static)
-        this = load(fileprefix)
-    end
     
-	methods (Abstract) 
-		save(this) 
-        saveas(this,fileprefix)
+	methods (Abstract)
+        char(this)
     end
 
 	%  Created with Newcl by John J. Lee after newfcn by Frank Gonzalez-Morphy 

@@ -69,7 +69,7 @@ classdef AbstractHandleIO < handle
         end
         function        set.fqfileprefix(this, fqfp)
             assert(ischar(fqfp));
-            [p,f] = myfileparts(fqfp);            
+            [p,f] = fileprefixparts(fqfp);            
             if (~isempty(p))
                 this.filepath = p;
             end

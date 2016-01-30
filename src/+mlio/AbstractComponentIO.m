@@ -9,10 +9,7 @@ classdef AbstractComponentIO <  mlio.AbstractSimpleIO
  	%  last modified $LastChangedDate: 2013-08-10 21:27:41 -0500 (Sat, 10 Aug 2013) $
  	%  developed on Matlab 8.1.0.604 (R2013a)
  	%  $Id: AbstractComposite.m 2467 2013-08-11 02:27:41Z jjlee $
-
-    properties (Abstract)
-        cachedNext
-    end
+    
     
 	properties (Dependent)
         filename

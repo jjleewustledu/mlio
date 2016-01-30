@@ -50,8 +50,8 @@ classdef Test_ConcreteIO < matlab.unittest.TestCase
             this.verifyTrue(lexist(this.test_fqfn, 'file'));
         end
         function test_ctorNumeric(this)
-            mlio.ConcreteIO(magic(2));            
-            this.verifyTrue(lexist('instance_mlfourd_InnerNIfTId.nii.gz', 'file'));
+            cio = mlio.ConcreteIO(magic(2));
+            this.verifyTrue(lexist(cio.fqfn, 'file'));
         end
 		function test_ctorNIfTId(this)           
             niid = mlfourd.NIfTId.load(this.smallT1_fqfn);
@@ -102,8 +102,8 @@ classdef Test_ConcreteIO < matlab.unittest.TestCase
     
     methods (Access = private)
         function deleteFiles(this)
-            deleteExisting('instance_mlfourd_InnerNIfTId*');
-            deleteExisting(fullfile(this.registry.fslPath, 'Test_ConcreteIO*'));
+            deleteExisting2('instance_mlfourd_InnerNIfTId*');
+            deleteExisting2(fullfile(this.registry.fslPath, 'Test_ConcreteIO*'));
         end
     end
     
