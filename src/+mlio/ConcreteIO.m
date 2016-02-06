@@ -32,6 +32,9 @@ classdef ConcreteIO < mlio.AbstractIO
         function this = ConcreteIO(obj)
             import mlfourd.*;
             this.noclobber = true;
+            if (~exist('obj', 'var'))
+                return
+            end
             switch (class(obj))
                 case 'char'
                     this.fqfilename = obj;
