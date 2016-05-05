@@ -66,6 +66,11 @@ classdef ConcreteIO < mlio.AbstractIO
                         end
                         obj = obj.get(1);
                         this.fqfilename = obj.fqfilename;
+                    elseif (isa(obj, 'mlfourdfp.IFourdfp'))
+                        if (~obj.lexistFile)
+                            obj.save;
+                        end
+                        this.fqfilename = obj.fqfilename;
                     elseif (iscell(obj))
                         assert(~isempty(obj));               
                         this = ConcreteIO(obj{1});
