@@ -9,10 +9,6 @@ classdef ConcreteIO < mlio.AbstractIO
  	%% It was developed on Matlab 9.0.0.307022 (R2016a) Prerelease for MACI64.
  	
 
-	properties
- 		
-    end
-
     methods (Static)
         function this = load(fn)
             this = mlio.ConcreteIO(fn);
