@@ -27,7 +27,6 @@ classdef ConcreteIO < mlio.AbstractIO
         end
         function this = ConcreteIO(obj)
             import mlfourd.*;
-            this.noclobber = true;
             if (~exist('obj', 'var'))
                 return
             end

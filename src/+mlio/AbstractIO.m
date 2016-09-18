@@ -105,10 +105,10 @@ classdef AbstractIO < mlio.AbstractSimpleIO
         end
         function this = set.noclobber(this, nc)
             assert(islogical(nc));
-            this.noclobber_ = nc;
+            this.filesystemRegistry_.noclobber = nc;
         end
-        function tf   = get.noclobber(this)
-            tf = this.noclobber_;
+        function tf   = get.noclobber(this) 
+            tf = this.filesystemRegistry_.noclobber;
         end
     end
     

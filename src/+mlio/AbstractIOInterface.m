@@ -24,10 +24,10 @@ classdef AbstractIOInterface < mlio.IOInterface
     end
     
     properties (Access = 'protected')
-        filepath_   = '';
-        fileprefix_ = '';
-        filesuffix_ = '';
-        noclobber_  = false;
+        filepath_   = ''
+        fileprefix_ = ''
+        filesuffix_ = ''
+        filesystemRegistry_
     end
     
 	%  Created with Newcl by John J. Lee after newfcn by Frank Gonzalez-Morphy 

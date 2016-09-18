@@ -24,13 +24,17 @@ classdef AbstractSimpleIO < mlio.IOInterface
             this.filesuffix_ = x;
             this.save;
         end
+        
+        function this = AbstractSimpleIO
+            this.filesystemRegistry_ = mlsystem.FilesystemRegistry.instance;
+        end
     end
     
     properties (Access = protected)
         filepath_   = '';
         fileprefix_ = '';
         filesuffix_ = '';
-        noclobber_  = false;
+        filesystemRegistry_
     end
     
 	%  Created with Newcl by John J. Lee after newfcn by Frank Gonzalez-Morphy 

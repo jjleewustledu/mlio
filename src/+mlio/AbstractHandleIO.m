@@ -94,10 +94,10 @@ classdef AbstractHandleIO < handle
         end
         function        set.noclobber(this, nc)
             assert(islogical(nc));
-            this.noclobber_ = nc;
+            this.filesystemRegistry_.noclobber = nc;
         end
         function tf   = get.noclobber(this)
-            tf = this.noclobber_;
+            tf = this.filesystemRegistry_.noclobber;
         end
     end
     
@@ -117,7 +117,7 @@ classdef AbstractHandleIO < handle
         filepath_
         fileprefix_
         filesuffix_
-        noclobber_ = true;
+        filesystemRegistry_
     end
 
 end
