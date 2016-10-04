@@ -41,6 +41,15 @@ classdef TextParser < mlio.AbstractParser
     end
     
     methods
+        function e  = lineElements(this, varargin)
+            ip = inputParser;
+            addOptional(ip, 'lineNum', 1, @(x) isnumeric(x) && x <= this.length);
+            parse(ip, varargin{:});
+            
+            line = this.cellContents{ip.Results.lineNum};
+            e = textscan(line, '%s');
+            e = e{1};
+        end
         function sv = parseAssignedString(this, fieldName)
             line = this.findFirstCell(fieldName);
             names = regexp(line, sprintf('%s\\s*=\\s*(?<valueName>.+$)', fieldName), 'names');

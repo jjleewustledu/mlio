@@ -29,7 +29,7 @@ classdef AbstractParser < mlio.AbstractIO
             d = sprintf('%s read %s on %s', class(this), this.fqfilename, datestr(now));
         end
         function l = get.length(this)
-            l = length(this.cellContents);
+            l = length(this.cellContents); %#ok<CPROP>
         end
     end  
     
@@ -50,7 +50,7 @@ classdef AbstractParser < mlio.AbstractIO
         function save(this)
             try
                 fid = fopen(this.fqfilename, 'w');
-                for c = 1:length(this.cellContents_)
+                for c = 1:length(this.cellContents_) %#ok<CPROP>
                     fprintf(fid, '%s\n', this.cellContents_{c});
                 end
                 fclose(fid);
