@@ -54,8 +54,10 @@ classdef LogParser < mlio.AbstractParser
                 end
             end
             if (isempty(contnt))
-                error('mlio:endOfFile', 'LogParser.findNextCell found nothing more'); end
-        end	
+                %idx = length(this.cellContents_);
+                error('mlio:endOfFile', 'LogParser.findNextCell found nothing more');
+            end
+                    end	
         function [contntCells,idx] = findNextNCells(this, fieldName, idx0, N)
             assert(ischar(fieldName));
             assert(isnumeric(idx0));
@@ -71,8 +73,10 @@ classdef LogParser < mlio.AbstractParser
                     break
                 end
             end
-            if (isempty(contntCells))
-                error('mlio:endOfFile', 'LogParser.findNextNCells found nothing more'); end
+            if (isempty(contntCells))                
+                %idx = length(this.cellContents_);
+                error('mlio:endOfFile', 'LogParser.findNextNCells found nothing more'); 
+            end
         end	
         function [nvs,idx1] = nextLineNNumeric(this, fieldName, varargin)
             p = inputParser;

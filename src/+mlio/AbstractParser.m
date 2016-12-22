@@ -20,10 +20,14 @@ classdef AbstractParser < mlio.AbstractIO
         length
     end
 
-	methods % GET
+	methods % GET/SET
         function c = get.cellContents(this)
             assert(~isempty(this.cellContents_));
             c = this.cellContents_;
+        end
+        function this = set.cellContents(this, s)
+            assert(iscell(s));
+            this.cellContents_ = s;
         end
         function d = get.descrip(this)
             d = sprintf('%s read %s on %s', class(this), this.fqfilename, datestr(now));
