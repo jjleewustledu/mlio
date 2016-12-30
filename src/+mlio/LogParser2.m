@@ -1,5 +1,5 @@
-classdef LogParser < mlio.AbstractParser
-	%% LOGPARSER parses numerical values to the right or left of a text field-name.
+classdef LogParser2 < mlio.AbstractParser
+	%% LOGPARSER2 parses numerical values to the right or left of a text field-name.
     %  For more fine-grained parsing features, see TextParser.
 
 	%  $Revision$ 
@@ -14,15 +14,15 @@ classdef LogParser < mlio.AbstractParser
         function this = load(fn)
             assert(lexist(fn, 'file'));
             [pth, fp, fext] = fileparts(fn); 
-            if (lstrfind(fext, mlio.LogParser.FILETYPE_EXT) || ...
+            if (lstrfind(fext, mlio.LogParser2.FILETYPE_EXT) || ...
                 isempty(fext))
-                this = mlio.LogParser.loadText(fn); 
+                this = mlio.LogParser2.loadText(fn); 
                 this.filepath_   = pth;
                 this.fileprefix_ = fp;
                 this.filesuffix_ = fext;
                 return 
             end
-            error('mlio:unsupportedParam', 'LogParser.load does not support file-extension .%s', fext);
+            error('mlio:unsupportedParam', 'LogParser2.load does not support file-extension .%s', fext);
         end
         function this = loadx(fn, ext)
             if (~lstrfind(fn, ext))
@@ -33,7 +33,7 @@ classdef LogParser < mlio.AbstractParser
             end
             assert(lexist(fn, 'file'));
             [pth, fp, fext] = filepartsx(fn, ext); 
-            this = mlio.LogParser.loadText(fn);
+            this = mlio.LogParser2.loadText(fn);
             this.filepath_   = pth;
             this.fileprefix_ = fp;
             this.filesuffix_ = fext;
@@ -54,8 +54,10 @@ classdef LogParser < mlio.AbstractParser
                 end
             end
             if (isempty(contnt))
-                error('mlio:endOfFile', 'LogParser.findNextCell found nothing more'); end
-        end	
+                %idx = length(this.cellContents_);
+                error('mlio:endOfFile', 'LogParser2.findNextCell found nothing more');
+            end
+                    end	
         function [contntCells,idx] = findNextNCells(this, fieldName, idx0, N)
             assert(ischar(fieldName));
             assert(isnumeric(idx0));
@@ -71,8 +73,10 @@ classdef LogParser < mlio.AbstractParser
                     break
                 end
             end
-            if (isempty(contntCells))
-                error('mlio:endOfFile', 'LogParser.findNextNCells found nothing more'); end
+            if (isempty(contntCells))                
+                %idx = length(this.cellContents_);
+                error('mlio:endOfFile', 'LogParser2.findNextNCells found nothing more'); 
+            end
         end	
         function [nvs,idx1] = nextLineNNumeric(this, fieldName, varargin)
             p = inputParser;
@@ -150,8 +154,8 @@ classdef LogParser < mlio.AbstractParser
     methods (Static, Access = 'protected')
         function this = loadText(fn)
             import mlio.*;
-            this = LogParser;
-            this.cellContents_ = LogParser.textfileToCell(fn);
+            this = LogParser2;
+            this.cellContents_ = LogParser2.textfileToCell(fn);
         end
     end
 
