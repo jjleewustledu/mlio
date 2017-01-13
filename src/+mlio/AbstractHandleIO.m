@@ -92,12 +92,13 @@ classdef AbstractHandleIO < handle
         function f    = get.fqfp(this)
             f = this.fqfileprefix;
         end
-        function        set.noclobber(this, nc)
+        function        set.noclobber(~, nc)
             assert(islogical(nc));
-            this.filesystemRegistry_.noclobber = nc;
+            fsr = mlsystem.FilesystemRegistry.instance;
+            fsr.noclobber = nc;
         end
-        function tf   = get.noclobber(this)
-            tf = this.filesystemRegistry_.noclobber;
+        function tf   = get.noclobber(~)
+            tf = mlsystem.FilesystemRegistry.instance.noclobber;
         end
     end
     

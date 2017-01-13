@@ -32,8 +32,8 @@ classdef Test_AbstractIO < mlfourd_unittest.Test_mlfourd
             this.verifyTrue(isa(this.abstractIO_, 'mlio.AbstractIO'));
             cl = this.abstractIO_;
         end
-        function tf = get.testfile(this)
-            tf = fullfile(this.testPath, 'IOInterface', 'test_TextIO.txt');
+        function tf = get.testfile(~)
+            tf = fullfile(getenv('LOCAL'), 'src', 'mlcvl', 'mlio', 'test', '+mlio_unittest', 'test_TextIO.txt');
         end
         function tf = get.testfile2(this)
             [pth, f, e] = fileparts(this.testfile);

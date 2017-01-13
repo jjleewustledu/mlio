@@ -23,8 +23,8 @@ classdef Test_TextIO < mlfourd_unittest.Test_mlfourd
     end
 
     methods %% SET/GET
-        function fn = get.textfile(this)
-            fn = fullfile(this.testPath, 'IOInterface', 'test_TextIO.txt');
+        function fn = get.textfile(~)
+            fn = fullfile(getenv('LOCAL'), 'src', 'mlcvl', 'mlio', 'test', '+mlio_unittest', 'test_TextIO.txt');
         end
     end
     
@@ -38,7 +38,7 @@ classdef Test_TextIO < mlfourd_unittest.Test_mlfourd
  		end 
  		function test_contents(this)
             CHECK_STRING = '# william, wagner, bruckner, rainier Configuration';
-            this.verifyEqual(3, strfind(this.textIO.contents, CHECK_STRING));
+            this.verifyEqual(25, strfind(this.textIO.contents, CHECK_STRING));
  		end 
  		function test_descrip(this) 
             CHECK_STRING = sprintf('mlio.TextIO read %s on %s', this.textfile, datestr(now, 'dd-mmm-yyyy'));
