@@ -9,6 +9,19 @@ classdef ConcreteIO < mlio.AbstractIO
  	%% It was developed on Matlab 9.0.0.307022 (R2016a) Prerelease for MACI64.
  	
 
+    properties (Dependent)
+        viewer
+    end
+    
+    methods %% GET        
+        function v    = get.viewer(this)
+            v = this.viewer_;
+        end
+        function this = set.viewer(this, v)
+            this.viewer_ = v;
+        end
+    end
+    
     methods (Static)
         function this = load(fn)
             this = mlio.ConcreteIO(fn);
@@ -24,6 +37,9 @@ classdef ConcreteIO < mlio.AbstractIO
                 handexcept(ME, 'mlio:filesystemError', ...
                     'ConcreteIO.save failed attempt to %s', c);
             end
+        end
+        function        view(this, varargin)
+            this.launchExternalViewer(this.viewer, varargin{:});
         end
         function this = ConcreteIO(obj)
             import mlfourd.*;
@@ -82,18 +98,39 @@ classdef ConcreteIO < mlio.AbstractIO
     
     %% PRIVATE
     
+    properties (Access = private)
+        viewer_ = 'freeview'
+    end
+    
     methods (Static, Access = private)
         function tf = isJimmyShen(obj)
             tf = isfield(obj, 'hdr') && isfield(obj, 'filetype') && isfield(obj, 'fileprefix') && ...
                  isfield(obj, 'machine') && isfield(obj, 'ext') && isfield(obj, 'img') && isfield(obj, 'untouch');
         end
-        function save_JimmyShen(obj)
+        function      save_JimmyShen(obj)
             assert(isfield(obj, 'untouch'));
             if (obj.untouch)
                 mlniftitools.save_untouch_nii(obj, [obj.fileprefix '.nii.gz']);
             else
                 mlniftitools.save_nii(obj, [obj.fileprefix '.nii.gz']);
             end
+        end
+    end
+    
+    methods (Access = private)        
+        function      launchExternalViewer(this, app, varargin)
+            assert(ischar(app));
+            assert(lexist(this.fqfilename, 'file'));
+            
+            if (strcmp(this.filesuffix, '.4dfp.ifh'))
+                this.filesuffix = '.4dfp.img';
+            end
+            if (isempty(varargin))
+                cmdline = sprintf('%s %s',    app, this.fqfilename);
+            else
+                cmdline = sprintf('%s %s %s', app, this.fqfilename, imaging2str(varargin{:}));
+            end  
+            mlbash(cmdline);
         end
     end
 
