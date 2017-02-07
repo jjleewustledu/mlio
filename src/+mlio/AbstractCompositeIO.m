@@ -1,5 +1,6 @@
 classdef AbstractCompositeIO < mlio.IOInterface
-	%% ABSTRACTCOMPOSITEIO  
+	%% ABSTRACTCOMPOSITEIO implements highly conserved portions of IOInterface;
+    %  forks from AbstractSimpleIO.
 
 	%  $Revision$
  	%  was created 14-Jan-2016 20:51:08
