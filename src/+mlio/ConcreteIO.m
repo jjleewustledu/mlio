@@ -123,7 +123,7 @@ classdef ConcreteIO < mlio.AbstractIO
             assert(lexist(this.fqfilename, 'file'));
             
             if (strcmp(this.filesuffix, '.4dfp.ifh'))
-                this.filesuffix = '.4dfp.img';
+                this.filesuffix = '.4dfp.ifh';
             end
             if (isempty(varargin))
                 cmdline = sprintf('%s %s',    app, this.fqfilename);
