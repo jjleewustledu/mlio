@@ -1,6 +1,5 @@
 classdef AbstractIO < mlio.AbstractSimpleIO    
 	%% ABSTRACTIO provides thin, minimalist methods for I/O.  Agnostic to all other object characteristics.
-    %  Yet abstract:  static methods load; methods save
     
 	%  $Revision$
  	%  was created $Date$
@@ -105,10 +104,16 @@ classdef AbstractIO < mlio.AbstractSimpleIO
         end
         function this = set.noclobber(this, nc)
             assert(islogical(nc));
-            this.filesystemRegistry_.noclobber = nc;
+            this.noclobber_ = nc;
         end
         function tf   = get.noclobber(this) 
-            tf = this.filesystemRegistry_.noclobber;
+            tf = this.noclobber_;
+        end
+    end
+    
+    methods 
+        function this = AbstractIO(varargin)
+            this = this@mlio.AbstractSimpleIO(varargin{:});
         end
     end
     

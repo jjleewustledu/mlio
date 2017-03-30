@@ -1,7 +1,6 @@
 classdef AbstractSimpleIO < mlio.IOInterface
 	%% ABSTRACTSIMPLEIO implements highly conserved portions of IOInterface;
     %  forks from AbstractCompositeIO.
-    %  Yet abstract:  IOInterface static methods load; methods save
     
 	%  $Revision$
  	%  was created $Date$
@@ -26,7 +25,6 @@ classdef AbstractSimpleIO < mlio.IOInterface
         end
         
         function this = AbstractSimpleIO
-            this.filesystemRegistry_ = mlsystem.FilesystemRegistry.instance;
         end
     end
     
@@ -34,7 +32,7 @@ classdef AbstractSimpleIO < mlio.IOInterface
         filepath_   = '';
         fileprefix_ = '';
         filesuffix_ = '';
-        filesystemRegistry_
+        noclobber_  = false;
     end
     
 	%  Created with Newcl by John J. Lee after newfcn by Frank Gonzalez-Morphy 
