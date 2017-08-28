@@ -114,9 +114,6 @@ classdef AbstractIO < mlio.AbstractSimpleIO
     methods 
         function this = AbstractIO(varargin)
             this = this@mlio.AbstractSimpleIO(varargin{:});
-            if (isempty(this.filepath_))
-                this.filepath_ = pwd;
-            end
         end
     end
     
