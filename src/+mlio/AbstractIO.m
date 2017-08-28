@@ -34,9 +34,6 @@ classdef AbstractIO < mlio.AbstractSimpleIO
             this.filepath_ = pth;
         end
         function pth  = get.filepath(this)
-            if (isempty(this.filepath_))
-                this.filepath_ = pwd; 
-            end
             pth = this.filepath_;
         end
         function this = set.fileprefix(this, fp)
