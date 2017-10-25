@@ -48,7 +48,12 @@ classdef ConcreteIO < mlio.AbstractIO
             end
             switch (class(obj))
                 case 'char'
-                    this.fqfilename = obj;
+                    if (strcmp(obj(end-3:end), '.mgz') || strcmp(obj(end-3:end), '.mgh'))
+                        this.fqfileprefix = obj(1:end-4);
+                        this.filesuffix   = obj(end-3:end);                    
+                    else
+                        this.fqfilename = obj;
+                    end
                 case 'struct'
                     if (this.isJimmyShen(obj))
                         if (~lexist([obj.fileprefix '.nii.gz']))
