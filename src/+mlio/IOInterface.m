@@ -1,4 +1,4 @@
-classdef IOInterface
+classdef (Abstract) IOInterface
 	%% IOINTERFACE is an abstract interface for filesystem I/O
     
 	%  $Revision$

@@ -21,7 +21,10 @@ classdef AbstractIO < mlio.AbstractSimpleIO
         noclobber
     end
     
-    methods %% Set/Get
+    methods
+        
+        %% Set/Get
+        
         function this = set.filename(this, fn)
             assert(ischar(fn));
             [this.filepath,this.fileprefix,this.filesuffix] = myfileparts(fn);
@@ -106,9 +109,9 @@ classdef AbstractIO < mlio.AbstractSimpleIO
         function tf   = get.noclobber(this) 
             tf = this.noclobber_;
         end
-    end
-    
-    methods 
+        
+        %%
+        
         function this = AbstractIO(varargin)
             this = this@mlio.AbstractSimpleIO(varargin{:});
             if (isempty(this.filepath_))

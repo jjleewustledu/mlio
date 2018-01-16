@@ -23,7 +23,10 @@ classdef AbstractComponentIO <  mlio.AbstractSimpleIO
         noclobber 
     end
 
-    methods %% Set/Get mostly delegate to this.cachedNext
+    methods 
+        
+        %% Set/Get mostly delegate to this.cachedNext
+        
         function this = set.filename(this, fn)
             this.cachedNext.filename = fn;
         end
@@ -78,6 +81,15 @@ classdef AbstractComponentIO <  mlio.AbstractSimpleIO
         function tf   = get.noclobber(this)
             tf = this.cachedNext.noclobber;
         end
+        
+        %%
+        
+        function this = AbstractComponentIO(varargin)
+            this = this@mlio.AbstractSimpleIO(varargin{:});
+            if (isempty(this.filepath_))
+                this.filepath_ = pwd;
+            end
+        end        
     end
     
 	%  Created with Newcl by John J. Lee after newfcn by Frank Gonzalez-Morphy 
