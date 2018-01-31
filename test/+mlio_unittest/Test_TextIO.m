@@ -24,7 +24,7 @@ classdef Test_TextIO < mlfourd_unittest.Test_mlfourd
 
     methods %% SET/GET
         function fn = get.textfile(~)
-            fn = fullfile(getenv('LOCAL'), 'src', 'mlcvl', 'mlio', 'test', '+mlio_unittest', 'test_TextIO.txt');
+            fn = fullfile(getenv('HOME'), 'MATLAB-Drive', 'mlio', 'test', '+mlio_unittest', 'test_TextIO.txt');
         end
     end
     

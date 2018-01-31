@@ -9,7 +9,7 @@ classdef Test_LogParser < matlab.unittest.TestCase
  	%  was created 26-Feb-2016 17:15:15
  	%  by jjlee,
  	%  last modified $LastChangedDate$
- 	%  and checked into repository /Users/jjlee/Local/src/mlcvl/mlio/test/+mlio_unittest.
+ 	%  and checked into repository /Users/jjlee/MATLAB-Drive/mlio/test/+mlio_unittest.
  	%% It was developed on Matlab 9.0.0.307022 (R2016a) Prerelease for MACI64.
  	
 
@@ -88,7 +88,7 @@ classdef Test_LogParser < matlab.unittest.TestCase
 		function setupLogParser(this)
  			import mlio.*;
  			this.testObj_ = LogParser.load( ...
-                fullfile('/Users/jjlee/Local/src/mlcvl/mlio/test/+mlio_unittest', 'imgreg_4dfp.log'));
+                fullfile('/Users/jjlee/MATLAB-Drive/mlio/test/+mlio_unittest', 'imgreg_4dfp.log'));
  		end
 	end
 
