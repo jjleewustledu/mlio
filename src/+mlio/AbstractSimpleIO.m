@@ -15,7 +15,7 @@ classdef AbstractSimpleIO < mlio.IOInterface
             c = this.fqfilename;
         end
         function        save(this)
-            save(this.fqfilename, this);
+            save(this.fqfilename, 'this');
         end
         function this = saveas(this, fqfn)
             this.fqfilename = fqfn;

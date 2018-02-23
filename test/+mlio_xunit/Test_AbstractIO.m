@@ -71,9 +71,9 @@ classdef Test_AbstractIO < MyTestCase
 %             this.verifyError(@() error('mlio_xunit:exceptionTesting', 'test_noclobber.g'), 'mlio_xunit:exceptionTesting');
 %             this.verifyError(@() this.abstractIO.saveas(this.testfile), 'identifier');
 %        end
-%        function test_saveas(this)
-%           warning('not implemented');
-%        end
+       function test_saveas(this)
+           
+       end
         
  		function this = Test_AbstractIO(varargin) 
  			this = this@MyTestCase(varargin{:}); 
