@@ -16,7 +16,7 @@ classdef Test_TextParser < matlab.unittest.TestCase
 
 	properties 
         textParser
-        textFqfilename = '/Users/jjlee/MATLAB-Drive/mlio/test/+mlio_unittest/p8047gluc1.img.rec'
+        textFqfilename = fullfile(getenv('HOME'), 'MATLAB-Drive/mlio/test/+mlio_unittest/p8047gluc1.img.rec')
  	end 
 
 	methods (Test)

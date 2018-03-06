@@ -88,7 +88,7 @@ classdef Test_LogParser < matlab.unittest.TestCase
 		function setupLogParser(this)
  			import mlio.*;
  			this.testObj_ = LogParser.load( ...
-                fullfile('/Users/jjlee/MATLAB-Drive/mlio/test/+mlio_unittest', 'imgreg_4dfp.log'));
+                fullfile(getenv('HOME'), 'MATLAB-Drive/mlio/test/+mlio_unittest', 'imgreg_4dfp.log'));
  		end
 	end
 
