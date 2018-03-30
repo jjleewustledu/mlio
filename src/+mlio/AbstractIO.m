@@ -112,6 +112,22 @@ classdef AbstractIO < mlio.AbstractSimpleIO
         
         %%
         
+        function obj  = fqfilenameObject(~, varargin)
+            %  @override
+            %  @param named typ has default 'fqfn'
+            
+            ip = inputParser;
+            ip.KeepUnmatched = true;
+            addRequired( ip, 'fqfn', @ischar);
+            addParameter(ip, 'suffix', '', @ischar);
+            addParameter(ip, 'typ', 'fqfn', @ischar);
+            parse(ip, varargin{:});
+            
+            [pth,fp,ext] = myfileparts(ip.Results.fqfn);
+            fqfn_ = fullfile(pth, [fp ip.Results.suffix ext]);
+            obj = imagingType(ip.Results.typ, fqfn_);
+        end
+        
         function this = AbstractIO(varargin)
             this = this@mlio.AbstractSimpleIO(varargin{:});
             if (isempty(this.filepath_))
