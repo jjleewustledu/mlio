@@ -47,12 +47,18 @@ classdef ConcreteIO < mlio.AbstractIO
                 return
             end
             switch (class(obj))
-                case 'char'
+                case 'mlio.ConcreteIO'
+                    this = obj;
+                case 'char' 
                     if (strcmp(obj(end-3:end), '.mgz') || strcmp(obj(end-3:end), '.mgh'))
                         this.fqfileprefix = obj(1:end-4);
                         this.filesuffix   = obj(end-3:end);                    
                     else
                         this.fqfilename = obj;
+                    end
+                    if (~lexist(this.fqfilename))
+                        warning('mlio:fileNotOnFilesystemUponObjectCreation', ...
+                            'ConcreteIO.ctor received fqfilename->%s which is not on the filesystem', this.fqfilename);
                     end
                 case 'struct'
                     if (this.isJimmyShen(obj))
