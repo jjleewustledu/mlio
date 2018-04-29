@@ -57,8 +57,9 @@ classdef ConcreteIO < mlio.AbstractIO
                         this.fqfilename = obj;
                     end
                     if (~lexist(this.fqfilename))
-                        warning('mlio:fileNotOnFilesystemUponObjectCreation', ...
-                            'ConcreteIO.ctor received fqfilename->%s which is not on the filesystem', this.fqfilename);
+                        fprintf('mlio:fileNotOnFilesystemUponObjectCreation\n');
+                        fprintf('ConcreteIO.ctor received fqfilename->%s which is not on the filesystem\n', ...
+                            this.fqfilename);
                     end
                 case 'struct'
                     if (this.isJimmyShen(obj))
