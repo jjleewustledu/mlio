@@ -56,7 +56,7 @@ classdef ConcreteIO < mlio.AbstractIO
                     else
                         this.fqfilename = obj;
                     end
-                    if (~lexist(this.fqfilename))
+                    if (~lexist(this.fqfilename) && verbose)
                         fprintf('mlio:fileNotOnFilesystemUponObjectCreation\n');
                         fprintf('ConcreteIO.ctor received fqfilename->%s which is not on the filesystem\n', ...
                             this.fqfilename);
