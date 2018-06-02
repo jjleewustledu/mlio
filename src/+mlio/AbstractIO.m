@@ -119,12 +119,16 @@ classdef AbstractIO < mlio.AbstractSimpleIO
             ip = inputParser;
             ip.KeepUnmatched = true;
             addRequired( ip, 'fqfn', @ischar);
-            addParameter(ip, 'suffix', '', @ischar);
+            addParameter(ip, 'tag', '', @ischar);
             addParameter(ip, 'typ', 'fqfn', @ischar);
             parse(ip, varargin{:});
             
             [pth,fp,ext] = myfileparts(ip.Results.fqfn);
-            fqfn_ = fullfile(pth, [fp ip.Results.suffix ext]);
+            if (isempty(fp))                
+                obj = imagingType('path', pth);
+                return
+            end
+            fqfn_ = fullfile(pth, [fp ip.Results.tag ext]);
             obj = imagingType(ip.Results.typ, fqfn_);
         end
         
