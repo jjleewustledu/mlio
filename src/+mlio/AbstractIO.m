@@ -1,4 +1,4 @@
-classdef AbstractIO < mlio.AbstractSimpleIO    
+classdef (Abstract) AbstractIO < mlio.AbstractSimpleIO    
 	%% ABSTRACTIO provides thin, minimalist methods for I/O.  Agnostic to all other object characteristics.
     
 	%  $Revision$
@@ -130,8 +130,7 @@ classdef AbstractIO < mlio.AbstractSimpleIO
             end
             fqfn_ = fullfile(pth, [fp ip.Results.tag ext]);
             obj = imagingType(ip.Results.typ, fqfn_);
-        end
-        
+        end        
         function this = AbstractIO(varargin)
             this = this@mlio.AbstractSimpleIO(varargin{:});
             if (isempty(this.filepath_))

@@ -1,4 +1,4 @@
-classdef AbstractParser < mlio.AbstractIO
+classdef (Abstract) AbstractParser < mlio.AbstractIO
 	%% ABSTRACTPARSER  
 
 	%  $Revision$
@@ -9,7 +9,7 @@ classdef AbstractParser < mlio.AbstractIO
  	%% It was developed on Matlab 8.5.0.197613 (R2015a) for MACI64.
  	
 	properties (Constant)		 
-        FILETYPE_EXT = {'.txt' '.ifh' '.rec' '.log' '.out' '.hdrinfo' '.mhdr' '.hdr' '.dat'} % supported file extension; all should be plain text
+        FILETYPE_EXT = {'.txt' '.log' '.out' '.hdrinfo' '.mhdr' '.hdr' '.dat'} % supported file extension; all should be plain text
         ENG_PATT_UP  = '\-?\d+\.?\d*E?D?\+?\-?\d*'
         ENG_PATT_LOW = '\-?\d+\.?\d*e?d?\+?\-?\d*'
         ENG_PATT     = '\-?\d+\.?\d*E?e?D?d?\+?\-?\d*'
@@ -20,8 +20,16 @@ classdef AbstractParser < mlio.AbstractIO
         descrip
         fid
     end
-
-	methods % GET/SET
+    
+	methods (Static, Abstract)
+        this = load(filename)
+        this = loadx(filename, ext) % specifies multi-dottied file extensions
+    end
+    
+	methods		
+        
+        %% GET/SET
+        
         function c = get.cellContents(this)
             assert(~isempty(this.cellContents_));
             c = this.cellContents_;
@@ -36,14 +44,9 @@ classdef AbstractParser < mlio.AbstractIO
         function g = get.fid(this)
             g = this.fid_;
         end
-    end  
-    
-	methods (Static, Abstract)
-        this = load(filename)
-        this = loadx(filename, ext) % specifies multi-dottied file extensions
-    end
-    
-	methods		
+        
+        %%
+        
         function ch = char(this)
             ch = strjoin(this.cellContents_);
         end
@@ -68,11 +71,11 @@ classdef AbstractParser < mlio.AbstractIO
         end
         function save(this)
             try
-                fid = fopen(this.fqfilename, 'w');
-                for c = 1:length(this.cellContents_) %#ok<CPROP>
-                    fprintf(fid, '%s\n', this.cellContents_{c});
+                id = fopen(this.fqfilename, 'w');
+                for c = 1:length(this.cellContents_) 
+                    fprintf(id, '%s\n', this.cellContents_{c});
                 end
-                fclose(fid);
+                fclose(id);
             catch ME
                 handexcept(ME);
             end
@@ -106,7 +109,7 @@ classdef AbstractParser < mlio.AbstractIO
                 fclose(fid);
                 assert(~isempty(ca) && ~isempty(ca{1}))
             catch ME
-                handexcept('mlio.ioException', ...
+                handexcept('mlio.ioError', ...
                            'AbstractParser.textfileToCell:  could not read %s; ME.identifier->%s', ...
                            fqfn, ME.identifier);
             end
