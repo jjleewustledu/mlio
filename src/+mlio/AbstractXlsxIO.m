@@ -11,7 +11,7 @@ classdef AbstractXlsxIO < mlio.AbstractIO
  	end
 
 	methods (Access = protected)        
-        function s    = excelNum2sec(~, excelnum)            
+        function s    = excelNum2sec(~, excelnum)
             pm            = sign(excelnum);
             dt_           = datetime(abs(excelnum), 'ConvertFrom', 'excel');
             dt_.TimeZone  = mldata.TimingData.PREFERRED_TIMEZONE;
