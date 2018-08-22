@@ -9,7 +9,7 @@ classdef (Abstract) AbstractParser < mlio.AbstractIO
  	%% It was developed on Matlab 8.5.0.197613 (R2015a) for MACI64.
  	
 	properties (Constant)		 
-        FILETYPE_EXT = {'.txt' '.log' '.out' '.hdrinfo' '.mhdr' '.hdr' '.dat'} % supported file extension; all should be plain text
+        FILETYPE_EXT = {'.txt' '.log' '.out' '.hdrinfo' '.mhdr' '.hdr' '.dat' '.ifh' '.img.rec'} % supported file extension; all should be plain text
         ENG_PATT_UP  = '\-?\d+\.?\d*E?D?\+?\-?\d*'
         ENG_PATT_LOW = '\-?\d+\.?\d*e?d?\+?\-?\d*'
         ENG_PATT     = '\-?\d+\.?\d*E?e?D?d?\+?\-?\d*'
@@ -53,6 +53,7 @@ classdef (Abstract) AbstractParser < mlio.AbstractIO
         function [parsed,line] = findFirstCell(this, fieldName)
             assert(ischar(fieldName));
             parsed = [];
+            line = [];
             for c = 1:length(this.cellContents_)
                 if (lstrfind(this.cellContents_{c}, fieldName))
                     parsed = this.cellContents_{c};

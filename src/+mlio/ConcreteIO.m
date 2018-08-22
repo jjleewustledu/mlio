@@ -71,7 +71,7 @@ classdef ConcreteIO < mlio.AbstractIO
                 otherwise
                     if (isnumeric(obj))
                         obj = NIfTId(obj);
-                        if (~obj.lexistFile)
+                        if (~obj.lexist)
                             obj.save;
                         end
                         this.fqfilename = obj.fqfilename;
@@ -79,18 +79,18 @@ classdef ConcreteIO < mlio.AbstractIO
                         obj.save;
                         this.fqfilename = obj.fqfilename;
                     elseif (isa(obj, 'mlfourd.INIfTId'))
-                        if (~obj.lexistFile)
+                        if (~obj.lexist)
                             obj.save;
                         end
                         this.fqfilename = obj.fqfilename;
                     elseif (isa(obj, 'mlfourd.INIfTIc'))
-                        if (all(~cell2mat(obj.lexistFile)))
+                        if (all(~cell2mat(obj.lexist)))
                             obj.save;
                         end
                         obj = obj.get(1);
                         this.fqfilename = obj.fqfilename;
                     elseif (isa(obj, 'mlfourdfp.IFourdfp'))
-                        if (~obj.lexistFile)
+                        if (~obj.lexist)
                             obj.save;
                         end
                         this.fqfilename = obj.fqfilename;
@@ -134,8 +134,8 @@ classdef ConcreteIO < mlio.AbstractIO
             assert(ischar(app));
             assert(lexist(this.fqfilename, 'file'));
             
-            if (strcmp(this.filesuffix, '.4dfp.ifh'))
-                this.filesuffix = '.4dfp.ifh';
+            if (strcmp(this.filesuffix, '.4dfp.hdr'))
+                this.filesuffix = '.4dfp.hdr';
             end
             if (isempty(varargin))
                 cmdline = sprintf('%s %s',    app, this.fqfilename);
