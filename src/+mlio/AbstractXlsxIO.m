@@ -26,7 +26,7 @@ classdef AbstractXlsxIO < mlio.AbstractIO
                 if (this.hasTimings(vars{v}))
                     if (any(isnumeric(col)))                        
                         lrows = logical(~isnan(col) & ~isempty(col));
-                        dt_   = this.datetimeConvertFromExcel2(tbl{lrows,v});
+                        dt_   = mldata.Xlsx.datetimeConvertFromExcel2(tbl{lrows,v});
                         col   = NaT(size(col));
                         col.TimeZone = dt_.TimeZone;
                         col(lrows) = dt_;
@@ -37,11 +37,6 @@ classdef AbstractXlsxIO < mlio.AbstractIO
                 end
                 tbl.(vars{v}) = col;
             end
-        end
-        function dt_  = datetimeConvertFromExcel2(~, varargin)
-            % addresses what may be an artefact of linking cells across sheets in Numbers/Excel on MacOS
-            
-            dt_ = mldata.TimingData.datetimeConvertFromExcel2(varargin{:});            
         end
         function tf   = hasTimings(~, var)
             tf = lstrfind(lower(var), 'time') | lstrfind(lower(var), 'hh_mm_ss') | lstrfind(lower(var), 'hhmmss');
