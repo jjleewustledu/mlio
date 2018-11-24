@@ -1,4 +1,4 @@
-classdef (Abstract) AbstractParser < mlio.AbstractIO
+classdef (Abstract) AbstractParser < handle & mlio.AbstractHandleIO
 	%% ABSTRACTPARSER  
 
 	%  $Revision$
@@ -34,7 +34,7 @@ classdef (Abstract) AbstractParser < mlio.AbstractIO
             assert(~isempty(this.cellContents_));
             c = this.cellContents_;
         end
-        function this = set.cellContents(this, s)
+        function     set.cellContents(this, s)
             assert(iscell(s));
             this.cellContents_ = s;
         end

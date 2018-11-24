@@ -1,4 +1,4 @@
-classdef TextParser < mlio.AbstractParser
+classdef TextParser < handle & mlio.AbstractParser
 	%% TEXTPARSER parses strings and numbers arranged in various ways with identifying field-names.  
     %  For simpler parsing of numbers next to a field-name, see LogParser.
 

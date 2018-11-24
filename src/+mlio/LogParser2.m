@@ -1,4 +1,4 @@
-classdef LogParser2 < mlio.AbstractParser
+classdef LogParser2 < handle & mlio.AbstractParser
 	%% LOGPARSER2 parses numerical values to the right or left of a text field-name.
     %  For more fine-grained parsing features, see TextParser.
 
@@ -93,7 +93,7 @@ classdef LogParser2 < mlio.AbstractParser
             frmt = '\\s*(?<value1>%s)';
             spec = {this.ENG_PATT_LOW};
             for n = 2:p.Results.N
-                frmt = [frmt '\\s+(?<value' num2str(n) '>%s)'];
+                frmt = [frmt '\\s+(?<value' num2str(n) '>%s)']; %#ok<*AGROW>
                 spec = [spec {this.ENG_PATT_LOW}];
             end
             args  = [{frmt} spec];
