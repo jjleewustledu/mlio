@@ -71,7 +71,7 @@ classdef ConcreteIO < mlio.AbstractIO
                 otherwise
                     if (isnumeric(obj))
                         obj = NIfTId(obj);
-                        if (~obj.lexist)
+                        if (~lexist(obj.fqfilename))
                             obj.save;
                         end
                         this.fqfilename = obj.fqfilename;

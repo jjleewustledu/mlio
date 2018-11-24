@@ -13,7 +13,7 @@ classdef TextParser < handle & mlio.AbstractParser
 	methods (Static)
         function this = load(fn)
             assert(lexist(fn, 'file'));
-            [pth, fp, fext] = fileparts(fn); 
+            [pth, fp, fext] = myfileparts(fn); 
             if (lstrfind(fext, mlio.TextParser.FILETYPE_EXT) || ...
                 isempty(fext))
                 this = mlio.TextParser.loadText(fn); 
@@ -22,7 +22,7 @@ classdef TextParser < handle & mlio.AbstractParser
                 this.filesuffix_ = fext;
                 return 
             end
-            error('mlio:unsupportedParam', 'TextParser.load does not support file-extension .%s', fext);
+            error('mlio:unsupportedParam', 'TextParser.load does not support file-extension %s', fext);
         end
         function this = loadx(fn, ext)
             if (~lstrfind(fn, ext))

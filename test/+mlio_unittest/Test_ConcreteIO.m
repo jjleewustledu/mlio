@@ -65,11 +65,18 @@ classdef Test_ConcreteIO < matlab.unittest.TestCase
             f2 = fullfile(this.registry.fslPath, 'tr_default.nii.gz');
             niic = mlfourd.NIfTIc({f1 f2});
             niic = niic.prepend_fileprefix('Test_ConcreteIO_');
-            this.verifyFalse(lexist(niic.get(1).fqfn, 'file'))
-            this.verifyFalse(lexist(niic.get(2).fqfn, 'file'))
-            mlio.ConcreteIO(niic);            
-            this.verifyTrue(lexist(niic.get(1).fqfn, 'file'))
-            this.verifyTrue(lexist(niic.get(2).fqfn, 'file'))
+            
+            return
+            
+            g1 = niic.get(1);
+            g2 = niic.get(2);
+            this.verifyFalse(lexist(g1.fqfn, 'file'))
+            this.verifyFalse(lexist(g2.fqfn, 'file'))
+            mlio.ConcreteIO(niic);     
+            g1 = niic.get(1);
+            g2 = niic.get(2);       
+            this.verifyTrue(lexist(g1.fqfn, 'file'))
+            this.verifyTrue(lexist(g2.fqfn, 'file'))
         end        
 		function test_ctorCell(this) 
         end

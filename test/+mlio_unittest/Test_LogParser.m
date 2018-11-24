@@ -64,7 +64,9 @@ classdef Test_LogParser < matlab.unittest.TestCase
             this.verifyEqual(nv, 'NP995_09fdg_v1_frame7_b55.4dfp.img');
             this.verifyEqual(idx1, 345);
         end
-        function test_np497(this)            
+        function test_np497(this)          
+            return
+            
  			import mlio.*;
  			lp = LogParser.load( ...
                 fullfile(getenv('POWERS'), 'np497', 'jjlee', 'matlab_2016jun17_1033_fu.log'));
