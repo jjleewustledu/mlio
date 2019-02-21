@@ -70,7 +70,7 @@ classdef ConcreteIO < mlio.AbstractIO
                     end
                 otherwise
                     if (isnumeric(obj))
-                        obj = NIfTId(obj);
+                        obj = ImagingFormatContext(obj);
                         if (~lexist(obj.fqfilename))
                             obj.save;
                         end
