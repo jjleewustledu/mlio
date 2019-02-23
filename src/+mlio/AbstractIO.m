@@ -33,33 +33,22 @@ classdef (Abstract) AbstractIO < mlio.AbstractSimpleIO
             fn = [this.fileprefix this.filesuffix];
         end
         function this = set.filepath(this, pth)
-            assert(ischar(pth));
-            this.filepath_ = pth;
+            this = this.setFilepath_(pth);
         end
         function pth  = get.filepath(this)
-            pth = this.filepath_;
+            pth = this.getFilepath_();
         end
         function this = set.fileprefix(this, fp)
-            assert(ischar(fp));
-            assert(~isempty(fp));
-            this.fileprefix_ = fp;
+            this = this.setFileprefix_(fp);
         end
         function fp   = get.fileprefix(this)
-            fp = this.fileprefix_;
+            fp = this.getFileprefix_();
         end
         function this = set.filesuffix(this, fs)
-            assert(ischar(fs));
-            if (~isempty(fs) && ~strcmp('.', fs(1)))
-                fs = ['.' fs];
-            end
-            [~,~,this.filesuffix_] = myfileparts(fs);
+            this = this.setFilesuffix_(fs);
         end
         function fs   = get.filesuffix(this)
-            if (isempty(this.filesuffix_))
-                fs = ''; return; end
-            if (~strcmp('.', this.filesuffix_(1)))
-                this.filesuffix_ = ['.' this.filesuffix_]; end
-            fs = this.filesuffix_;
+            fs = this.getFilesuffix_();
         end
         function this = set.fqfilename(this, fqfn)
             assert(ischar(fqfn));
@@ -136,6 +125,40 @@ classdef (Abstract) AbstractIO < mlio.AbstractSimpleIO
             if (isempty(this.filepath_))
                 this.filepath_ = pwd;
             end
+        end      
+    end
+    
+    %% PROTECTED
+    
+    methods (Access = protected)
+        function this = setFilepath_(this, pth)
+            assert(ischar(pth));
+            this.filepath_ = pth;
+        end
+        function pth  = getFilepath_(this)
+            pth = this.filepath_;
+        end
+        function this = setFileprefix_(this, fp)
+            assert(ischar(fp));
+            assert(~isempty(fp));
+            this.fileprefix_ = fp;
+        end
+        function fp   = getFileprefix_(this)
+            fp = this.fileprefix_;
+        end
+        function this = setFilesuffix_(this, fs)
+            assert(ischar(fs));
+            if (~isempty(fs) && ~strcmp('.', fs(1)))
+                fs = ['.' fs];
+            end
+            [~,~,this.filesuffix_] = myfileparts(fs);
+        end
+        function fs   = getFilesuffix_(this)
+            if (isempty(this.filesuffix_))
+                fs = ''; return; end
+            if (~strcmp('.', this.filesuffix_(1)))
+                this.filesuffix_ = ['.' this.filesuffix_]; end
+            fs = this.filesuffix_;
         end
     end
     

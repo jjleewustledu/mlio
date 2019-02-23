@@ -12,7 +12,10 @@ classdef AbstractHandleIO < handle
         noclobber
     end
     
-    methods %% Set/Get
+    methods 
+        
+        %% Set/Get
+        
         function        set.filename(this, fn)
             assert(ischar(fn));
             [this.filepath,this.fileprefix,this.filesuffix] = myfileparts(fn);
@@ -21,35 +24,22 @@ classdef AbstractHandleIO < handle
             fn = [this.fileprefix this.filesuffix];
         end
         function        set.filepath(this, pth)
-            assert(ischar(pth));
-            this.filepath_ = pth;
+            this.setFilepath_(pth);
         end
         function pth  = get.filepath(this)
-            if (isempty(this.filepath_))
-                this.filepath_ = pwd; end
-            pth = this.filepath_;
+            pth = this.getFilepath_();
         end
         function        set.fileprefix(this, fp)
-            assert(ischar(fp));
-            assert(~isempty(fp));
-            this.fileprefix_ = fp;
+            this.setFileprefix_(fp);
         end
         function fp   = get.fileprefix(this)
-            fp = this.fileprefix_;
+            fp = this.getFileprefix_();
         end
         function        set.filesuffix(this, fs)
-            assert(ischar(fs));
-            if (~isempty(fs) && ~strcmp('.', fs(1)))
-                fs = ['.' fs];
-            end
-            [~,~,this.filesuffix_] = myfileparts(fs);
+            this.setFilesuffix_(fs)
         end
         function fs   = get.filesuffix(this)
-            if (isempty(this.filesuffix_))
-                fs = ''; return; end
-            if (~strcmp('.', this.filesuffix_(1)))
-                this.filesuffix_ = ['.' this.filesuffix_]; end
-            fs = this.filesuffix_;
+            fs = this.getFilesuffix_();
         end
         function        set.fqfilename(this, fqfn)
             assert(ischar(fqfn));
@@ -114,11 +104,47 @@ classdef AbstractHandleIO < handle
         end
     end
     
+    %% PROTECTED
+    
     properties (Access = 'protected')
         filepath_
         fileprefix_
         filesuffix_
         filesystemRegistry_
+    end
+    
+    methods (Access = 'protected')        
+        function        setFilepath_(this, pth)
+            assert(ischar(pth));
+            this.filepath_ = pth;
+        end
+        function pth  = getFilepath_(this)
+            if (isempty(this.filepath_))
+                this.filepath_ = pwd; end
+            pth = this.filepath_;
+        end
+        function        setFileprefix_(this, fp)
+            assert(ischar(fp));
+            assert(~isempty(fp));
+            this.fileprefix_ = fp;
+        end
+        function fp   = getFileprefix_(this)
+            fp = this.fileprefix_;
+        end
+        function        setFilesuffix_(this, fs)
+            assert(ischar(fs));
+            if (~isempty(fs) && ~strcmp('.', fs(1)))
+                fs = ['.' fs];
+            end
+            [~,~,this.filesuffix_] = myfileparts(fs);
+        end
+        function fs   = getFilesuffix_(this)
+            if (isempty(this.filesuffix_))
+                fs = ''; return; end
+            if (~strcmp('.', this.filesuffix_(1)))
+                this.filesuffix_ = ['.' this.filesuffix_]; end
+            fs = this.filesuffix_;
+        end
     end
 
 end
