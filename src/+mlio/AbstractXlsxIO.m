@@ -14,9 +14,9 @@ classdef AbstractXlsxIO < mlio.AbstractIO
         function s    = excelNum2sec(~, excelnum)
             pm            = sign(excelnum);
             dt_           = datetime(abs(excelnum), 'ConvertFrom', 'excel');
-            dt_.TimeZone  = mlnipet.Resources.PREFERRED_TIMEZONE;
+            dt_.TimeZone  = mlpipeline.ResourcesRegistry.instance().preferredTimeZone;
             dt__          = datetime(dt_.Year, dt_.Month, dt_.Day);
-            dt__.TimeZone = mlnipet.Resources.PREFERRED_TIMEZONE;
+            dt__.TimeZone = mlpipeline.ResourcesRegistry.instance().preferredTimeZone;
             s             = pm*seconds(dt_ - dt__);
         end
         function tbl  = correctDates2(this, tbl, varargin)
@@ -32,7 +32,7 @@ classdef AbstractXlsxIO < mlio.AbstractIO
                         col(lrows) = dt_;
                     end
                     if (any(isdatetime(col)))
-                        col.TimeZone = mlnipet.Resources.PREFERRED_TIMEZONE;
+                        col.TimeZone = mlpipeline.ResourcesRegistry.instance().preferredTimeZone;
                     end
                 end
                 tbl.(vars{v}) = col;
@@ -46,3 +46,4 @@ classdef AbstractXlsxIO < mlio.AbstractIO
 	%  Created with Newcl by John J. Lee after newfcn by Frank Gonzalez-Morphy
  end
 
++
