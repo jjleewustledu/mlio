@@ -46,4 +46,3 @@ classdef AbstractXlsxIO < mlio.AbstractIO
 	%  Created with Newcl by John J. Lee after newfcn by Frank Gonzalez-Morphy
  end
 
-+
