@@ -26,7 +26,7 @@ classdef AbstractXlsxIO < mlio.AbstractIO
                 if (this.hasTimings(vars{v}))
                     if (any(isnumeric(col)))                        
                         lrows = logical(~isnan(col) & ~isempty(col));
-                        dt_   = mldata.Xlsx.datetimeConvertFromExcel2(tbl{lrows,v});
+                        dt_   = mldata.Xlsx.datetimeConvertFromExcel(tbl{lrows,v});
                         col   = NaT(size(col));
                         col.TimeZone = dt_.TimeZone;
                         col(lrows) = dt_;
