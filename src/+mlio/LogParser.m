@@ -38,6 +38,14 @@ classdef LogParser < handle & mlio.AbstractParser
             this.fileprefix_ = fp;
             this.filesuffix_ = fext;
         end
+        function this = loadpbs(fn)
+            assert(isfile(fn))
+            [pth, fp, fext] = fileparts(fn); 
+            this = mlio.LogParser.loadText(fn);
+            this.filepath_   = pth;
+            this.fileprefix_ = [fp fext];
+            this.filesuffix_ = '';
+        end
     end
     
 	methods  		
@@ -125,6 +133,21 @@ classdef LogParser < handle & mlio.AbstractParser
             end
             names = regexp(line, sprintf('%s\\s+(?<value1>%s)', fieldName, this.ENG_PATT_LOW), 'names');
             nv    = str2num(strtrim(names.value1)); %#ok<ST2NM>
+        end
+        function [nv,idx1] = rightSideTime(this, fieldName, varargin)
+            p = inputParser;
+            addRequired(p, 'fieldName', @ischar);
+            addOptional(p, 'idx0', 1,   @isnumeric);
+            parse(p, fieldName, varargin{:});
+            
+            [line,idx1] = this.findNextCell(fieldName, p.Results.idx0);
+            if (isempty(line))
+                nv = []; 
+                return
+            end
+            lines = strsplit(line, fieldName);
+            names = regexp(lines{2}, '\s*(=\s*|)(?<value1>\d{2}:\d{2}:\d{2})\S*', 'names');
+            nv    = datetime(datestr(names.value1, 'HH:MM:SS'));
         end
         function [nv,idx1] = rightSideNumeric2(this, fieldName, varargin)
             p = inputParser;
