@@ -76,9 +76,11 @@ classdef AbstractCompositeIO < mlio.IOInterface
         function tf   = get.noclobber(this)
             tf = this.innerCellComp_.getter('noclobber');
         end
-    end
-    
-    methods 
+    end    
+    methods
+        function c = char(this, varargin)
+            c = char(this.fqfilename, varargin{:});
+        end
         function this = saveas(this, fqfn)
             this = this.innerCellComp_.setter('fqfilename', fqfn);
             this = this.innerCellComp_.fevalThis('save');
@@ -87,6 +89,9 @@ classdef AbstractCompositeIO < mlio.IOInterface
             this = this.innerCellComp_.setter('fqfilename', fqfn);
             this = this.innerCellComp_.setter('filesuffix', x);
             this = this.innerCellComp_.fevalThis('save');
+        end
+        function s = string(this, varargin)
+            s = string(this.fqfilename, varargin{:});
         end
     end    
 

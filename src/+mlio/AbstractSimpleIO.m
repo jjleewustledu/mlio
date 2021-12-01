@@ -11,8 +11,8 @@ classdef (Abstract) AbstractSimpleIO < mlio.IOInterface
  	%  $Id$
     
     methods
-        function c    = char(this)
-            c = this.fqfilename;
+        function c    = char(this, varargin)
+            c = char(this.fqfilename, varargin{:});
         end
         function        save(this)
             save(this.fqfilename, 'this');
@@ -25,6 +25,9 @@ classdef (Abstract) AbstractSimpleIO < mlio.IOInterface
             this.fqfileprefix = fqfn(1:strfind(fqfn, x)-1);
             this.filesuffix_ = x;
             this.save;
+        end
+        function s    = string(this, varargin)
+            s = string(this.fqfilename, varargin{:});
         end
         
         function this = AbstractSimpleIO(varargin)

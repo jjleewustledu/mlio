@@ -22,6 +22,7 @@ classdef (Abstract) HandleIOInterface < handle
     
 	methods (Abstract)
         char(this)
+        string(this)
     end
 
 	%  Created with Newcl by John J. Lee after newfcn by Frank Gonzalez-Morphy 
