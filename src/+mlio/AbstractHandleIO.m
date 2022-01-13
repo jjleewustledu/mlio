@@ -1,4 +1,6 @@
-classdef AbstractHandleIO < handle
+classdef AbstractHandleIO < handle & matlab.mixin.Copyable & mlio.IOInterface
+    %% ABSTRACTHANDLEIO provides thin, minimalist methods for I/O.  Agnostic to all other object characteristics.
+    %  Support value classes using AbstractIO.
     
     properties (Dependent)
         filename
@@ -16,134 +18,209 @@ classdef AbstractHandleIO < handle
         
         %% Set/Get
         
-        function        set.filename(this, fn)
-            assert(ischar(fn));
-            [this.filepath,this.fileprefix,this.filesuffix] = myfileparts(fn);
+        function     set.filename(this, s)
+            assert(istext(s));
+            [this.filepath,this.fileprefix,this.filesuffix] = myfileparts(s);
         end
-        function fn   = get.filename(this)
-            fn = [this.fileprefix this.filesuffix];
+        function g = get.filename(this)
+            if isstring(this.fileprefix)
+                g = this.fileprefix + this.filesuffix;
+                return
+            end
+            if ischar(this.fileprefix)
+                g = [this.fileprefix this.filesuffix];
+                return
+            end
+            error("mlio:TypeError", "AbstractHandleIO.get.filename")
         end
-        function        set.filepath(this, pth)
+        function     set.filepath(this, pth)
             this.setFilepath_(pth);
         end
-        function pth  = get.filepath(this)
-            pth = this.getFilepath_();
+        function g = get.filepath(this)
+            g = this.getFilepath_();
         end
-        function        set.fileprefix(this, fp)
+        function     set.fileprefix(this, fp)
             this.setFileprefix_(fp);
         end
-        function fp   = get.fileprefix(this)
-            fp = this.getFileprefix_();
+        function g = get.fileprefix(this)
+            g = this.getFileprefix_();
         end
-        function        set.filesuffix(this, fs)
+        function     set.filesuffix(this, fs)
             this.setFilesuffix_(fs)
         end
-        function fs   = get.filesuffix(this)
-            fs = this.getFilesuffix_();
+        function g = get.filesuffix(this)
+            g = this.getFilesuffix_();
         end
-        function        set.fqfilename(this, fqfn)
-            assert(ischar(fqfn));
-            [p,f,e] = myfileparts(fqfn);
-            if (~isempty(p))
-                this.filepath = p;
+        function     set.fqfilename(this, s)
+            assert(istext(s));
+            [this.filepath,this.fileprefix,this.filesuffix] = myfileparts(s);
+        end
+        function g = get.fqfilename(this)
+            if isstring(this.fqfileprefix)
+                g = this.fqfileprefix + this.filesuffix;
+                return
             end
-            if (~isempty(f))
-                this.fileprefix = f;
+            if ischar(this.fqfileprefix)
+                g = [this.fqfileprefix this.filesuffix];
+                return
             end
-            if (~isempty(e))
-                this.filesuffix = e;
-            end           
+            error("mlio:TypeError", "AbstractHandleIO.get.fqfilename")
         end
-        function fqfn = get.fqfilename(this)
-            fqfn = [this.fqfileprefix this.filesuffix];
+        function     set.fqfileprefix(this, s)
+            [this.filepath,this.fileprefix] = myfileparts(s);
         end
-        function        set.fqfileprefix(this, fqfp)
-            assert(ischar(fqfp));
-            [p,f] = fileprefixparts(fqfp);            
-            if (~isempty(p))
-                this.filepath = p;
-            end
-            if (~isempty(f))
-                this.fileprefix = f;
-            end
+        function g = get.fqfileprefix(this)
+            g = fullfile(this.filepath, this.fileprefix);
         end
-        function fqfp = get.fqfileprefix(this)
-            fqfp = fullfile(this.filepath, this.fileprefix);
-        end
-        function        set.fqfn(this, f)
+        function     set.fqfn(this, f)
             this.fqfilename = f;
         end
-        function f    = get.fqfn(this)
-            f = this.fqfilename;
+        function g = get.fqfn(this)
+            g = this.fqfilename;
         end
-        function        set.fqfp(this, f)
+        function     set.fqfp(this, f)
             this.fqfileprefix = f;
         end
-        function f    = get.fqfp(this)
-            f = this.fqfileprefix;
+        function g = get.fqfp(this)
+            g = this.fqfileprefix;
         end
-        function        set.noclobber(~, nc)
-            assert(islogical(nc));
-            fsr = mlsystem.FilesystemRegistry.instance;
-            fsr.noclobber = nc;
+        function     set.noclobber(this, s)
+            assert(islogical(s));
+            this.filesystemRegistry_.noclobber = s;
         end
-        function tf   = get.noclobber(~)
-            tf = mlsystem.FilesystemRegistry.instance.noclobber;
+        function g = get.noclobber(this)
+            g = this.filesystemRegistry_.noclobber;
         end
-    end
-    
-    methods
+
+        %%
+
+        function c = char(this, varargin)
+            c = convertStringsToChars(this.fqfilename, varargin{:});
+        end
+        function obj  = fqfilenameObject(~, varargin)
+            %  Args:
+            %      fqfn (text): fully-qualified file name.
+            %      tag (text): string to add to file prefix.
+            %      typ (text): typeclass understood by mlfourd.ImagingContext2.imagingType.
+            %  Returns:
+            %      obj: returned by mlfourd.ImagingContext2.imagingType.
+            
+            ip = inputParser;
+            ip.KeepUnmatched = true;
+            addRequired( ip, "fqfn", @istext);
+            addParameter(ip, "tag", '', @istext);
+            addParameter(ip, "typ", 'fqfn', @istext);
+            parse(ip, varargin{:});
+            ipr = ip.Results;
+            
+            [pth,fp,x] = myfileparts(ipr.fqfn);
+            if 0 == strlength(fp) 
+                obj = imagingType("path", pth);
+                return
+            end
+            fqfn_ = fullfile(pth, [fp ipr.tag x]);
+            obj = imagingType(ipr.typ, fqfn_);
+        end  
+        function save(this)
+            save(this.fqfilename, "this");
+        end
         function saveas(this, fqfn)
             this.fqfilename = fqfn;
-            this.save;
+            this.save();
         end
         function saveasx(this, fqfn, x)
-            this.fqfileprefix = fqfn(1:strfind(fqfn, x)-1);
+            this.fqfileprefix = extractBefore(fqfn, x);
             this.filesuffix_ = x;
-            this.save;
+            this.save();
+        end
+        function s = string(this, varargin)
+            s = convertCharsToStrings(this.fqfilename, varargin{:});
         end
     end
     
     %% PROTECTED
     
-    properties (Access = 'protected')
+    properties (Access = protected)
         filepath_
         fileprefix_
         filesuffix_
         filesystemRegistry_
     end
     
-    methods (Access = 'protected')        
-        function        setFilepath_(this, pth)
-            assert(ischar(pth));
+    methods (Access = protected)
+        function     setFilepath_(this, pth)
+            assert(istext(pth));
             this.filepath_ = pth;
         end
-        function pth  = getFilepath_(this)
+        function g = getFilepath_(this)
             if (isempty(this.filepath_))
-                this.filepath_ = pwd; end
-            pth = this.filepath_;
+                this.filepath_ = pwd; 
+            end
+            g = this.filepath_;
         end
-        function        setFileprefix_(this, fp)
-            assert(ischar(fp));
-            assert(~isempty(fp));
+        function     setFileprefix_(this, fp)
+            assert(istext(fp));
             this.fileprefix_ = fp;
         end
-        function fp   = getFileprefix_(this)
-            fp = this.fileprefix_;
+        function g = getFileprefix_(this)
+            g = this.fileprefix_;
         end
-        function        setFilesuffix_(this, fs)
-            assert(ischar(fs));
-            if (~isempty(fs) && ~strcmp('.', fs(1)))
+        function     setFilesuffix_(this, fs)
+            assert(istext(fs));
+            if isstring(this.fileprefix) && 0 == strlength(fs)
+                this.filesuffix_ = "";
+                return
+            end
+            if ischar(this.fileprefix) && 0 == strlength(fs)
+                this.filesuffix_ = '';
+                return
+            end
+            if isstring(fs) && ~startsWith(fs, ".")
+                fs = "." + fs;
+            end
+            if ischar(fs) && ~startsWith(fs, '.')
                 fs = ['.' fs];
             end
-            [~,~,this.filesuffix_] = myfileparts(fs);
+            this.filesuffix_ = fs;
         end
-        function fs   = getFilesuffix_(this)
-            if (isempty(this.filesuffix_))
-                fs = ''; return; end
-            if (~strcmp('.', this.filesuffix_(1)))
-                this.filesuffix_ = ['.' this.filesuffix_]; end
-            fs = this.filesuffix_;
+        function g = getFilesuffix_(this)
+            if isempty(this.filesuffix_) && isstring(this.fileprefix)
+                g = "";
+                return
+            end
+            if isempty(this.filesuffix_) && ischar(this.fileprefix)
+                g = '';
+                return
+            end
+            g = this.filesuffix_;
+        end
+
+        function this = AbstractHandleIO(varargin)
+            %% ABSTRACTHANDLEIO 
+            %  Args:
+            %      filepath (text): is a parameter.
+            %      fileprefix (text): is a parameter.
+            %      filesuffix (text): is a parameter.
+            %      noclobber (logical): is a parameter.
+
+            [pth_,fp_] = fileparts(tempname);
+
+            ip = inputParser;
+            addParameter(ip, 'filepath', pth_, @istext);
+            addParameter(ip, 'fileprefix', fp_, @istext);
+            addParameter(ip, 'filesuffix', '.mat', @istext);
+            addParameter(ip, 'noclobber', false, @istext);
+            parse(ip, varargin{:});
+            ipr = ip.Results;
+            
+            this.filepath_   = ipr.filepath;
+            this.fileprefix_ = ipr.fileprefix;
+            this.filesuffix_ = ipr.filesuffix;
+            this.filesystemRegistry_ = mlio.FilesystemRegistry.instance();
+            this.filesystemRegistry_.noclobber = ipr.noclobber;
+        end
+        function that = copyElement(this)
+            that = copyElement@matlab.mixin.Copyable(this);
         end
     end
 

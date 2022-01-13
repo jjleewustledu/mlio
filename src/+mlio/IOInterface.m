@@ -1,4 +1,4 @@
-classdef (Abstract) IOInterface
+classdef (Abstract, HandleCompatible) IOInterface
 	%% IOINTERFACE is an abstract interface for filesystem I/O
     
 	%  $Revision$
@@ -22,9 +22,8 @@ classdef (Abstract) IOInterface
     
 	methods (Abstract)
         char(this)
-        string(this)
+        %string(this)
     end
 
 	%  Created with Newcl by John J. Lee after newfcn by Frank Gonzalez-Morphy 
 end
-

@@ -1,13 +1,15 @@
 classdef AbstractCompositeIO < mlio.IOInterface
-	%% ABSTRACTCOMPOSITEIO implements highly conserved portions of IOInterface;
-    %  forks from AbstractSimpleIO.
-
+	%% ABSTRACTCOMPOSITEIO implements highly conserved portions of IOInterface.
+    %  It forks from AbstractIO by use of an inner cell-array composition.
+    %
+    %  See also:  mlfourd.InnerCellComposite, mlpatterns.CellComposite
+    %
 	%  $Revision$
  	%  was created 14-Jan-2016 20:51:08
  	%  by jjlee,
  	%  last modified $LastChangedDate$
  	%  and checked into repository /Users/jjlee/Local/src/mlcvl/mlio/src/+mlio.
- 	%% It was developed on Matlab 9.0.0.307022 (R2016a) Prerelease for MACI64.
+ 	%  It was developed on Matlab 9.0.0.307022 (R2016a) Prerelease for MACI64.
  	
 	properties (Dependent)
         filename
@@ -21,7 +23,10 @@ classdef AbstractCompositeIO < mlio.IOInterface
         noclobber 
     end
 
-    methods %% Set/Get 
+    methods 
+        
+        %% Set/Get 
+
         function this = set.filename(this, fn)
             this = this.innerCellComp_.setter('filename', fn);
         end
@@ -76,10 +81,17 @@ classdef AbstractCompositeIO < mlio.IOInterface
         function tf   = get.noclobber(this)
             tf = this.innerCellComp_.getter('noclobber');
         end
-    end    
-    methods
-        function c = char(this, varargin)
-            c = char(this.fqfilename, varargin{:});
+    
+        %%
+
+        function c    = char(this, varargin)
+            c = convertStringsToChars(this.fqfilename, varargin{:});
+        end
+        function        fqfilenameObject(~, varargin)
+            error('mlio:NotImplementedError', 'AbstractCompositeIO.fqfilenameObject')
+        end
+        function        save(this)
+            this.innerCellComp_.fevalThis('save');
         end
         function this = saveas(this, fqfn)
             this = this.innerCellComp_.setter('fqfilename', fqfn);
@@ -91,7 +103,7 @@ classdef AbstractCompositeIO < mlio.IOInterface
             this = this.innerCellComp_.fevalThis('save');
         end
         function s = string(this, varargin)
-            s = string(this.fqfilename, varargin{:});
+            s = convertCharsToStrings(this.fqfilename, varargin{:});
         end
     end    
 
@@ -99,6 +111,12 @@ classdef AbstractCompositeIO < mlio.IOInterface
     
     properties (Abstract, Access = protected)
         innerCellComp_
+    end
+
+    methods (Access = protected)
+        function this = AbstractCompositeIO(varargin)
+            this.innerCellComp_ = mlfourd.InnerCellComposite(varargin{:});
+        end
     end
     
 	%  Created with Newcl by John J. Lee after newfcn by Frank Gonzalez-Morphy
