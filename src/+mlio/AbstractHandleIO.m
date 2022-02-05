@@ -204,8 +204,10 @@ classdef AbstractHandleIO < handle & matlab.mixin.Copyable & mlio.IOInterface
             %      noclobber (logical): is a parameter.
 
             [pth_,fp_] = fileparts(tempname);
+            fp_ = strcat(strrep(class(this), '.', '_'), '_', fp_);
 
             ip = inputParser;
+            ip.KeepUnmatched = true;
             addParameter(ip, 'filepath', pth_, @istext);
             addParameter(ip, 'fileprefix', fp_, @istext);
             addParameter(ip, 'filesuffix', '.mat', @istext);
