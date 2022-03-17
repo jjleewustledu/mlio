@@ -34,9 +34,10 @@ classdef FilesystemRegistry < handle
             ip = inputParser;
             addRequired(ip, 'cll', @iscell);
             parse(ip, cll);
+            ipr = ip.Results;
             
             cal = mlpatterns.CellArrayList;
-            cal.add(ip.Results.cll);
+            cal.add(ipr.cll);
             mlio.FilesystemRegistry.cellArrayListToTextfile(cal, varargin{:});
         end
         function        cellArrayListToTextfile(varargin)
@@ -45,10 +46,14 @@ classdef FilesystemRegistry < handle
             addRequired(ip, 'fqfn',      @istext);
             addOptional(ip, 'perm', 'w', @istext);
             parse(ip, varargin{:});
+            ipr = ip.Results;
             
-            iter = ip.Results.cal.createIterator;
+            iter = ipr.cal.createIterator;
             try
-                fid = fopen(ip.Results.fqfn, ip.Results.perm);
+                if ~isfolder(myfileparts(ipr.fqfn))
+                    mkdir(myfileparts(ipr.fqfn))
+                end
+                fid = fopen(ipr.fqfn, ipr.perm);
                 while (iter.hasNext)
                     fprintf(fid, '%s\n', char(iter.next));
                 end
