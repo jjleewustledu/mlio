@@ -28,7 +28,7 @@ classdef AbstractHandleIO < handle & matlab.mixin.Copyable & mlio.IOInterface
                 return
             end
             if ischar(this.fileprefix)
-                g = [this.fileprefix this.filesuffix];
+                g = strcat(this.fileprefix, this.filesuffix);
                 return
             end
             error("mlio:TypeError", "AbstractHandleIO.get.filename")
@@ -61,7 +61,7 @@ classdef AbstractHandleIO < handle & matlab.mixin.Copyable & mlio.IOInterface
                 return
             end
             if ischar(this.fqfileprefix)
-                g = [this.fqfileprefix this.filesuffix];
+                g = strcat(this.fqfileprefix, this.filesuffix);
                 return
             end
             error("mlio:TypeError", "AbstractHandleIO.get.fqfilename")
@@ -118,7 +118,7 @@ classdef AbstractHandleIO < handle & matlab.mixin.Copyable & mlio.IOInterface
                 obj = imagingType("path", pth);
                 return
             end
-            fqfn_ = fullfile(pth, [fp ipr.tag x]);
+            fqfn_ = fullfile(pth, strcat(fp, ipr.tag, x));
             obj = imagingType(ipr.typ, fqfn_);
         end  
         function save(this)
@@ -179,7 +179,7 @@ classdef AbstractHandleIO < handle & matlab.mixin.Copyable & mlio.IOInterface
                 fs = "." + fs;
             end
             if ischar(fs) && ~startsWith(fs, '.')
-                fs = ['.' fs];
+                fs = strcat('.', fs);
             end
             this.filesuffix_ = fs;
         end
