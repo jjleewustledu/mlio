@@ -153,7 +153,7 @@ classdef AbstractHandleIO < handle & matlab.mixin.Copyable & mlio.IOInterface
             this.filepath_ = pth;
         end
         function g = getFilepath_(this)
-            if (isempty(this.filepath_))
+            if (isemptytext(this.filepath_))
                 this.filepath_ = pwd; 
             end
             g = this.filepath_;
@@ -184,11 +184,11 @@ classdef AbstractHandleIO < handle & matlab.mixin.Copyable & mlio.IOInterface
             this.filesuffix_ = fs;
         end
         function g = getFilesuffix_(this)
-            if isempty(this.filesuffix_) && isstring(this.fileprefix)
+            if isemptytext(this.filesuffix_) && isstring(this.fileprefix)
                 g = "";
                 return
             end
-            if isempty(this.filesuffix_) && ischar(this.fileprefix)
+            if isemptytext(this.filesuffix_) && ischar(this.fileprefix)
                 g = '';
                 return
             end
