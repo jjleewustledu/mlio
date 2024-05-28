@@ -101,7 +101,7 @@ classdef FilesystemRegistry < handle
                 handexcept(ME);
             end
             if (isempty(ca) || isempty(ca{1}))
-                error('mlio:IOError', '%s was empty', fqfn);
+                fprintf('mlio:IONotice: %s was empty', fqfn);
             end
         end
         function cal  = textfileToCellArrayList(varargin)
