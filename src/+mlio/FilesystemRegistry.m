@@ -98,7 +98,7 @@ classdef FilesystemRegistry < handle
                 end
                 fclose(fid);
             catch ME
-                handexcept(ME);
+                handwarning(ME);
             end
             if (isempty(ca) || isempty(ca{1}))
                 fprintf('mlio:IONotice: %s was empty', fqfn);
